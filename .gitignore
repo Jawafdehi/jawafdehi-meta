@@ -10,5 +10,7 @@
 .venv
 /docs/admin
 
-services/*/
+# services/*/
 !services/.gitkeep
+
+/casework
