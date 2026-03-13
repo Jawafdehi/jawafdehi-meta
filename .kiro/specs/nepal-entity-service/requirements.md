@@ -270,9 +270,9 @@ The entity service hosts a public API that allows anyone to get the entity, rela
 #### Acceptance Criteria
 
 1. THE Nepal_Entity_Service SHALL expose a `GET /api/tags` endpoint returning all unique tags across all entities
-2. THE tags endpoint SHALL return tags as a sorted list of strings in the response body under a `tags` key
+2. THE tags endpoint SHALL return tags as a sorted list of strings in the response body under a `tags` key; sorting SHALL be Unicode case-insensitive ascending order (compare on the normalized lowercased form)
 3. THE tags endpoint SHALL return an empty list when no entities have tags
-4. THE tags endpoint SHALL not contain duplicate tag values
+4. THE tags endpoint SHALL not contain duplicate tag values; deduplication SHALL be performed after normalizing each tag: Unicode NFC normalization, leading/trailing whitespace trimmed, internal whitespace sequences collapsed to a single space, then lowercased for comparison
 5. THE Nepal_Entity_Service SHALL implement `get_all_tags()` on the `EntityDatabase` base class with a default implementation using `list_entities`
 6. THE `InMemoryCachedReadDatabase` SHALL override `get_all_tags()` to use the in-memory entity cache for efficiency
 7. THE `SearchService` SHALL expose `get_all_tags()` delegating to the underlying database implementation
@@ -285,7 +285,7 @@ The entity service hosts a public API that allows anyone to get the entity, rela
 
 1. WHEN the "Person" entity type is selected, THE nes-tundikhel UI SHALL display a tag multi-select dropdown below the entity type selector
 2. THE dropdown options SHALL be fetched from `GET /api/tags` at page load — not hardcoded
-3. WHEN tags are selected, THE search SHALL pass them as an additional AND-logic filter alongside the text query and entity type
+3. WHEN tags are selected, THE search SHALL pass them as an additional filter alongside the text query and entity type; multiple selected tags SHALL be combined using OR semantics (an entity matches if it has ANY of the selected tags), and the resulting tag-match set SHALL be combined with the text query and entity type using AND semantics
 4. WHEN the user switches to a non-"Person" entity type, THE selected tags SHALL be cleared and the dropdown SHALL be hidden
 5. WHEN tags are selected, THE UI SHALL show each as a removable chip with a × button and a "Clear all" option
 6. WHEN the API call to `GET /api/tags` fails, THE dropdown SHALL remain empty without breaking the page
@@ -308,7 +308,7 @@ The entity service hosts a public API that allows anyone to get the entity, rela
 7. THE Entity model SHALL expose an `entity_prefix` field; WHEN `entity_prefix` is set it SHALL be used to compute the entity `id`; WHEN it is not set the system SHALL fall back to the existing `type`/`sub_type` fields for backward compatibility
 8. THE `entity_type` and `sub_type` fields and API query parameters SHALL be retained but marked as deprecated in favour of `entity_prefix`
 9. THE Publication_Service SHALL accept an `entity_prefix` parameter in `create_entity()`; WHEN provided it SHALL take precedence over the deprecated `entity_type`/`entity_subtype` parameters
-10. THE Search_Service `search_entities()` SHALL accept an `entity_prefix` parameter and SHALL support prefix-match filtering (e.g. searching with `organization/nepal_govt` returns all entities whose prefix starts with `organization/nepal_govt`)
+10. THE Search_Service `search_entities()` SHALL accept an `entity_prefix` parameter and SHALL support segment-aware prefix-match filtering: an entity matches when its `entity_prefix` is exactly equal to the search prefix OR begins with the search prefix followed by `'/'` (e.g. `"organization/nepal_govt"` matches `"organization/nepal_govt/moha"` but NOT `"organization/nepal_govt2"`); naive `startswith` implementations without the slash boundary check are insufficient
 11. THE NES API `GET /api/entities` SHALL accept an `entity_prefix` query parameter and pass it through to the Search_Service; the existing `entity_type` and `sub_type` query parameters SHALL remain functional but be marked deprecated in the OpenAPI description
 12. THE file database directory traversal in `list_entities` SHALL walk up to `MAX_PREFIX_DEPTH` levels deep to discover entities stored under arbitrarily deep prefix paths
 13. THE `break_entity_id()` function SHALL return an `EntityIdComponents` with a `prefix` field (slash-joined string) and a `slug` field, replacing the old `type`/`subtype` fields; a backward-compatible `type` property and `subtype` property SHALL be provided on `EntityIdComponents` for callers that rely on the old structure

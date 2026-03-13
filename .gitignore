@@ -11,6 +11,4 @@
 /docs/admin
 venv/
 .claude
-
-services/*/
-!services/.gitkeep
+services/

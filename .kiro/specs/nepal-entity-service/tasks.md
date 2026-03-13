@@ -878,13 +878,33 @@
     - Update docstrings on deprecated fields/params
     - _Requirements: 21.3, Code quality_
 
+  - [x] 14.19 Fill coverage gaps identified during post-implementation test audit
+    - [x] GAP 1 — `create_entity` precedence (Req 21.9): added tests to `test_publication_service.py`
+      - `test_create_entity_invalid_prefix_raises` — unknown prefix raises ValueError
+      - `test_create_entity_entity_prefix_in_entity_data_overridden_by_param` — param wins over entity_data field
+    - [x] GAP 2 — `InMemoryCachedReadDatabase.search_entities(entity_prefix=...)` (Req 21.10/cache layer): added `TestSearchEntitiesEntityPrefix` to `test_in_memory_cached_read_database.py`
+      - exact 3-level prefix returns only matching entity
+      - partial 2-level prefix returns all children (startswith)
+      - prefix filter excludes unrelated entities
+      - no-match prefix returns empty list
+      - prefix combined with text query applies AND logic
+    - [x] GAP 3 — `build_entity_id_from_prefix` error cases (Req 21.1): added to `test_builders.py`
+      - empty prefix raises ValueError
+      - empty slug raises ValueError
+      - empty segment in prefix raises ValueError
+      - prefix exceeding MAX_PREFIX_DEPTH raises ValueError
+    - [x] GAP 4 — `break_entity_id` missing-slug case (Req 21.13): added to `test_builders.py`
+      - single segment after `entity:` (no slug) raises ValueError
+      - empty path segment raises ValueError
+    - _Requirements: 21.1, 21.9, 21.10, 21.13_
+
 ---
 
 ## Summary of Remaining Work
 
 ### High Priority (Core Functionality)
 1. **CLI Scraping Commands (8.5)** - Enable users to scrape data from external sources via CLI
-2. **CLI Data Management Commands (8.6)** - Provide data import/export and validation tools
+2. **CLI Data Management Commands (8.6)** - Provide data import/export and manipulation tools
 3. **End-to-End Testing (12.1-12.4)** - Ensure system reliability with comprehensive workflow tests
 
 ### Medium Priority (Enhanced Features)
@@ -892,12 +912,12 @@
 5. **Documentation Updates (13.1-13.4)** - Improve user guides and deployment documentation
 
 ### Completed
-- ✅ **Entity Prefix Extension (14.1-14.18)** - N-level entity prefix fully implemented (constraints, identifiers, registry, validator, entity model, publication service, database traversal, search service, API, integration check)
+- ✅ **Entity Prefix Extension (14.1-14.19)** - N-level entity prefix fully implemented and test gaps resolved (constraints, identifiers, registry, validator, entity model, publication service, database traversal, search service, API, in-memory cache layer, integration check, coverage gap audit)
 
 ### Implementation Notes
 - The core system (Phases 0-7) is complete and functional
 - Migration system (Phase 10) is fully implemented and operational
-- Entity prefix extension (Phase 14) is fully implemented and operational
+- Entity prefix extension (Phase 10, task IDs 14.x) is fully implemented and operational
 - Performance optimizations including caching and indexing are in place
 - API, services, and database layers are production-ready
 - Focus remaining work on CLI tooling and comprehensive testing
