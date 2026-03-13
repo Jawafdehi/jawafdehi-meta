@@ -12,3 +12,8 @@
 venv/
 .claude
 services/
+
+# services/*/
+!services/.gitkeep
+
+/casework
