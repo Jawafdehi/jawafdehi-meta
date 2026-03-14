@@ -1,0 +1,11 @@
+{
+  "customizations": {
+    "codespaces": {
+      "repositories": {
+        "NewNepal-org/*": {
+          "permissions": "write-all"
+        }
+      }
+    }
+  }
+}
