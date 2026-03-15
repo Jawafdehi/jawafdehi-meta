@@ -12,6 +12,12 @@ This document outlines the MCP tools needed to effectively assist caseworkers in
    5. `mcp_jawafdehi_get_nes_entities` - Retrieve complete entity profiles by ID to access detailed information about individuals and organizations.
    6. `mcp_jawafdehi_get_nes_tags` - Fetch all available entity tags in the NES database to understand entity categorization.
    7. `mcp_jawafdehi_convert_date` - Convert dates between AD (Gregorian) and BS (Bikram Sambat) calendars for accurate date handling.
+   8. `mcp_jawafdehi_convert_to_markdown` - Convert documents to Markdown. Supports:
+      - Nepal government PDFs: Use `doc_type="ciaa-press-release"` for best Nepali text handling
+      - Office documents: DOCX, PPTX, XLSX (omit `doc_type`)
+      - General PDFs: Omit `doc_type` (⚠️ Nepali text may not be accurate)
+      - Web pages: Use `uri` parameter with http:// or https:// URLs
+      - Parameters: `file_path` or `uri`, `doc_type` (optional), `output_path` (optional)
 
 2. **Google Workspace MCP Server**
    1. `mcp_workspace_mcp_search_drive_files` - Search for files in Google Drive by name or content to locate case folders and documents.
@@ -26,7 +32,8 @@ This document outlines the MCP tools needed to effectively assist caseworkers in
    10. `mcp_workspace_mcp_list_spreadsheet_comments` - List comments from spreadsheets to review collaborative feedback on case data.
    11. `mcp_workspace_mcp_start_google_auth` - Initiate Google OAuth authentication required before accessing Google Workspace tools.
 
-3. **Fetch MCP Server to get the `fetch` tool.**
+3. **Fetch MCP Server**
+   1. `mcp_fetch_fetch` - Fetch URL content and convert to markdown for accessing web-based resources.
 
 
 ## Notes
@@ -79,7 +86,9 @@ This document outlines the MCP tools needed to effectively assist caseworkers in
         "ngm_query_judicial",
         "get_nes_tags",
         "search_nes_entities",
-        "get_nes_entities"
+        "get_nes_entities",
+        "likhit_extract",
+        "convert_to_markdown"
       ],
       "disabledTools": []
     }
