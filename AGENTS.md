@@ -22,10 +22,13 @@ NewNepal.org consists of three major projects, each with their own subcomponents
    - Services: `nes`, `nes-tundikhel`, `nes-assets`
 
 3. **NGM (Nepal Governance Modernization)** - Governance monitoring and analysis
-   - Services: `ngm`
+   - Services: `ngm`, `ngm-frontend`
 
 4. **NewNepal.org Website** - Main organizational website
    - Service: `newnepal-website`
+
+5. **Shared Tools & Infrastructure**
+   - Services: `jawafdehi-mcp` (MCP tools for Jawafdehi, NES, and NGM), `likhit` (document processing), `org-admin-panel` (administrative interface)
 
 ## Key Paths
 
@@ -43,10 +46,15 @@ NewNepal.org consists of three major projects, each with their own subcomponents
 ├── services/               # All application services (independent repositories)
 │   ├── jawafdehi-api/      # Django accountability API
 │   ├── jawafdehi-frontend/ # React public frontend
+│   ├── jawafdehi-mcp/      # MCP server for Jawafdehi tools
 │   ├── nes/                # Nepal entity database
 │   ├── nes-tundikhel/      # NES explorer UI
 │   ├── nes-assets/         # NES static assets
+│   ├── ngm/                # Nepal Government Modernization (NGM) project, including judicial data, official PDFs, etc.
+│   ├── ngm-frontend/       # NGM frontend interface (ngm.jawafdehi.org)
 │   ├── newnepal-website/   # NewNepal.org main website
+│   ├── likhit/             # Document processing toolkit (Convert official documents to markdown)
+│   ├── org-admin-panel/    # Administrative interface
 │   └── infra/              # Infrastructure as Code (independent repository)
 │       ├── terraform/      # Terraform configuration
 │       └── misc/           # Build configs and scripts
@@ -77,11 +85,15 @@ git clone git@github.com:NewNepal-org/NepalEntityService.git nes
 # Or clone all services
 git clone git@github.com:NewNepal-org/JawafdehiAPI.git jawafdehi-api
 git clone git@github.com:NewNepal-org/Jawafdehi.git jawafdehi-frontend
+git clone git@github.com:NewNepal-org/jawafdehi-mcp.git jawafdehi-mcp
 git clone git@github.com:NewNepal-org/NepalEntityService.git nes
 git clone git@github.com:NewNepal-org/NepalEntityService-tundikhel.git nes-tundikhel
 git clone git@github.com:NewNepal-org/NepalEntityService-assets.git nes-assets
-git clone git@github.com:NewNepal-org/newnepal-website.git newnepal-website
 git clone git@github.com:NewNepal-org/ngm.git ngm
+git clone git@github.com:NewNepal-org/ngm-frontend.git ngm-frontend
+git clone git@github.com:NewNepal-org/newnepal-website.git newnepal-website
+git clone git@github.com:NewNepal-org/likhit.git likhit
+git clone git@github.com:NewNepal-org/org-admin-panel.git org-admin-panel
 git clone git@github.com:NewNepal-org/GCP-deployment.git infra
 ```
 
@@ -170,7 +182,12 @@ cd services/nes/docs
 | **nes** | Backend | Python, Poetry | Nepal entity database |
 | **nes-tundikhel** | Frontend | React, TypeScript, Vite | NES explorer UI |
 | **nes-assets** | Static | Jekyll | NES static assets site |
+| **ngm** | Backend | Python, Poetry | Judicial data collection, GitHub Actions, scrapers |
+| **ngm-frontend** | Frontend | React, TypeScript, Vite | NGM frontend interface |
 | **newnepal-website** | Frontend | React, TypeScript, Docusaurus | NewNepal.org main website |
+| **jawafdehi-mcp** | MCP Server | Python, FastMCP | Shared MCP tools for Jawafdehi, NES, and NGM |
+| **likhit** | Toolkit | Python, Poetry | Document processing toolkit |
+| **org-admin-panel** | Frontend | React, TypeScript, Vite | Administrative interface |
 
 ## Technology Stack
 
@@ -205,6 +222,11 @@ cd services/nes/docs
 - **Jawafdehi corruption cases** → Work in `services/jawafdehi-api/`
 - **Jawafdehi public website** → Work in `services/jawafdehi-frontend/`
 - **Entity management** → Work in `services/nes/`
+- **Judicial data** → Work in `services/ngm/`
+- **NGM frontend** → Work in `services/ngm-frontend/`
+- **MCP tools (Jawafdehi, NES, NGM)** → Work in `services/jawafdehi-mcp/`
+- **Document processing** → Work in `services/likhit/`
+- **Admin interface** → Work in `services/org-admin-panel/`
 - **NewNepal.org website** → Work in `services/newnepal-website/`
 - **Infrastructure changes** → Work in `services/infra/` (independent repository)
 
