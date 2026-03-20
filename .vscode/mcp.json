@@ -12,9 +12,9 @@
         "sheets"
       ],
       "env": {
-        "GOOGLE_OAUTH_CLIENT_ID": "<<GoogleClientId>>",
-        "GOOGLE_OAUTH_CLIENT_SECRET": "<<GoogleClientSecret>>",
-        "USER_GOOGLE_EMAIL": "<<GoogleEmail>>",
+        "GOOGLE_OAUTH_CLIENT_ID": "${env:GOOGLE_OAUTH_CLIENT_ID}",
+        "GOOGLE_OAUTH_CLIENT_SECRET": "${env:GOOGLE_OAUTH_CLIENT_SECRET}",
+        "USER_GOOGLE_EMAIL": "${env:USER_GOOGLE_EMAIL}",
         "WORKSPACE_MCP_PORT": "40321"
       },
     },
@@ -33,7 +33,7 @@
         "jawafdehi-mcp"
       ],
       "env": {
-        "NGM_DATABASE_URL": "<<NGM_DATABASE_URL>>"
+        "NGM_DATABASE_URL": "${env:NGM_DATABASE_URL}"
       },
     }
   }

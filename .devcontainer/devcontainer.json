@@ -1,9 +1,6 @@
 {
   "name": "Default Setup",
-  "features": {
-    "ghcr.io/jsburckhardt/devcontainer-features/uv:1": {},
-    "ghcr.io/shyim/devcontainers-features/bun:0": {},
-  },
+  "postStartCommand": "./.devcontainer/startup.sh",
   "customizations": {
     "codespaces": {
       "repositories": {
@@ -33,6 +30,17 @@
     "NGM_DATABASE_URL": {
       "description": "NGM judicial database URL."
     },
-    "JAWAFDEHI_API_BASE_URL": { }
+    "JAWAFDEHI_API_BASE_URL": { 
+      "description": "Jawafdehi API Base URL."
+    },
+    "GOOGLE_OAUTH_CLIENT_ID": {
+      "description": "Google OAuth Client ID"
+    },
+    "GOOGLE_OAUTH_CLIENT_SECRET": {
+      "description": "Google OAuth Client secret"
+    },
+    "USER_GOOGLE_EMAIL": {
+      "description": "Your google email authorized to access Jawafdehi Shared Drive."
+    }
   }
 }
