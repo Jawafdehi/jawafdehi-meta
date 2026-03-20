@@ -1,5 +1,9 @@
 {
   "name": "Default Setup",
+  "features": {
+    "ghcr.io/jsburckhardt/devcontainer-features/uv:1": {},
+    "ghcr.io/shyim/devcontainers-features/bun:0": {},
+  },
   "customizations": {
     "codespaces": {
       "repositories": {
@@ -21,13 +25,14 @@
         "zaaack.markdown-editor"
       ],
       "settings": {
-        // "editor.formatOnSave": true,
-        // "editor.defaultFormatter": "esbenp.prettier-vscode"
+        "editor.formatOnSave": false
       }
     }
   },
-  "features": {
-    "ghcr.io/jsburckhardt/devcontainer-features/uv:1": {},
-    "ghcr.io/shyim/devcontainers-features/bun:0": {},
+  "secrets": {
+    "NGM_DATABASE_URL": {
+      "description": "NGM judicial database URL."
+    },
+    "JAWAFDEHI_API_BASE_URL": { }
   }
 }
