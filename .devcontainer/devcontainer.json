@@ -1,6 +1,6 @@
 {
   "name": "Default Setup",
-  "postStartCommand": "./.devcontainer/startup.sh",
+  "postCreateCommand": "./.devcontainer/startup.sh",
   "customizations": {
     "codespaces": {
       "repositories": {
