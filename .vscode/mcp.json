@@ -1,0 +1,40 @@
+{
+  "servers": {
+    "workspace-mcp": {
+      "command": "uvx",
+      "args": [
+        "workspace-mcp",
+        "--single-user",
+        "--read-only",
+        "--tools",
+        "drive",
+        "docs",
+        "sheets"
+      ],
+      "env": {
+        "GOOGLE_OAUTH_CLIENT_ID": "<<GoogleClientId>>",
+        "GOOGLE_OAUTH_CLIENT_SECRET": "<<GoogleClientSecret>>",
+        "USER_GOOGLE_EMAIL": "<<GoogleEmail>>",
+        "WORKSPACE_MCP_PORT": "40321"
+      },
+    },
+    "fetch": {
+      "command": "uvx",
+      "args": [
+        "mcp-server-fetch"
+      ],
+      "env": {}
+    },
+    "jawafdehi": {
+      "command": "uvx",
+      "args": [
+        // "--from",
+        // "git+https://github.com/NewNepal-org/jawafdehi-mcp.git",
+        "jawafdehi-mcp"
+      ],
+      "env": {
+        "NGM_DATABASE_URL": "<<NGM_DATABASE_URL>>"
+      },
+    }
+  }
+}
