@@ -1,6 +1,7 @@
 {
   "name": "Default Setup",
   "postCreateCommand": "./.devcontainer/startup.sh",
+  "forwardPorts": [40321],
   "customizations": {
     "codespaces": {
       "repositories": {
