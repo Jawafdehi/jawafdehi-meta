@@ -16,7 +16,8 @@
         "GOOGLE_OAUTH_CLIENT_SECRET": "${env:GOOGLE_OAUTH_CLIENT_SECRET}",
         "USER_GOOGLE_EMAIL": "${env:USER_GOOGLE_EMAIL}",
         "WORKSPACE_MCP_PORT": "40321",
-        "GOOGLE_OAUTH_REDIRECT_URI": "https://${env:CODESPACE_NAME}:40321/oauth2callback"
+        "GOOGLE_OAUTH_REDIRECT_URI": "https://${env:CODESPACE_NAME}-40321.app.github.dev/oauth2callback",
+        "OAUTHLIB_INSECURE_TRANSPORT": "1"
       },
     },
     "fetch": {

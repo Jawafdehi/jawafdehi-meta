@@ -20,7 +20,11 @@
         "Github.copilot",
         "mhutchie.git-graph",
         "shd101wyy.markdown-preview-enhanced",
-        "zaaack.markdown-editor"
+        "zaaack.markdown-editor",
+        "mathematic.vscode-pdf",
+        "ShahilKumar.docxreader",
+        "GrapeCity.gc-excelviewer",
+        "mechatroner.rainbow-csv"
       ],
       "settings": {
         "editor.formatOnSave": false
