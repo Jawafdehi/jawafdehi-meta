@@ -1,14 +1,24 @@
 {
-  "name": "Jawafdehi Caseworker",
+  "name": "Jawafdehi Developer",
   "postCreateCommand": "./.devcontainer/startup.sh",
   "forwardPorts": [40321],
   "customizations": {
     "codespaces": {
+      "permissions": {
+        "NewNepal-org/*": {
+          "permissions": {
+            "contents": "write",
+            "pull_request": "write",
+            "issues": "write"
+          }
+        }
+      }
     },
     "vscode": {
       "extensions": [
         "GitHub.codespaces",
         "GitHub.vscode-pull-request-github",
+        "ms-python.python",
         "Github.copilot",
         "mhutchie.git-graph",
         "shd101wyy.markdown-preview-enhanced",

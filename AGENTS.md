@@ -35,8 +35,11 @@ NewNepal.org consists of three major projects, each with their own subcomponents
 ```
 /
 ├── .kiro/                  # Kiro IDE configuration (meta-repo level)
+│   ├── skills/             # AI agent skills (shared) — also accessible via .agents/skills symlink
 │   ├── specs/              # Feature specifications (shared)
 │   └── steering/           # AI steering rules (shared)
+├── .agents/
+│   └── skills -> ../.kiro/skills   # Symlink to .kiro/skills for GitHub Copilot agent compatibility
 ├── .amazonq/               # Amazon Q configuration
 │   └── rules/              # Amazon Q rules
 ├── .cursor/                # Cursor IDE configuration

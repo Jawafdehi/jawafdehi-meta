@@ -383,6 +383,10 @@ Guide caseworkers on preparing for publication:
    - Set status to `IN_REVIEW` when ready
    - Case becomes viewable at `https://jawafdehi.org/case/{ID}`
 
+3. **Field Notes**:
+   - `short_description`: This field is **optional** (भर्नु आवश्यक छैन). Leave blank if not needed.
+   - `description`: Uses **TinyMCE** rich text editor, so content is stored as **HTML** (not Markdown). When preparing case descriptions for the admin panel, format as plain HTML. See https://www.tiny.cloud/docs/tinymce/latest/ for documentation.
+
 ### Stage 6: Review Process
 
 After caseworker submits for review, a moderator/supervisor will:
