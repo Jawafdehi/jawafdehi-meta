@@ -4,17 +4,9 @@
   "forwardPorts": [40321],
   "customizations": {
     "codespaces": {
-      "repositories": {
-        "NewNepal-org/*": {
-          "permissions": "write-all"
-        }
-      }
     },
     "vscode": {
       "extensions": [
-        "dbaeumer.vscode-eslint",
-        "esbenp.prettier-vscode",
-        "ms-python.python",
         "GitHub.codespaces",
         "GitHub.vscode-pull-request-github",
         "Github.copilot",
@@ -27,7 +19,10 @@
         "mechatroner.rainbow-csv"
       ],
       "settings": {
-        "editor.formatOnSave": false
+        "editor.formatOnSave": false,
+        "remote.autoForwardPorts": false,
+        "javascript.autoClosingTags": false,
+		    "python.testing.pytestEnabled": true
       }
     }
   },
