@@ -34,6 +34,9 @@
     "JAWAFDEHI_API_BASE_URL": { 
       "description": "Jawafdehi API Base URL."
     },
+    "JAWAFDEHI_API_TOKEN": {
+      "description": "Jawafdehi API authentication token."
+    },
     "GOOGLE_OAUTH_CLIENT_ID": {
       "description": "Google OAuth Client ID"
     },

@@ -35,7 +35,8 @@
         "jawafdehi-mcp"
       ],
       "env": {
-        "NGM_DATABASE_URL": "${env:NGM_DATABASE_URL}"
+        "NGM_DATABASE_URL": "${env:NGM_DATABASE_URL}",
+        "JAWAFDEHI_API_TOKEN": "${env:JAWAFDEHI_API_TOKEN}"
       },
     }
   }
