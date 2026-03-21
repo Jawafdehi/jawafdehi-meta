@@ -1,5 +1,5 @@
 {
-  "name": "Default Setup",
+  "name": "Caseworker Setup",
   "postCreateCommand": "./.devcontainer/startup.sh",
   "forwardPorts": [40321],
   "customizations": {
