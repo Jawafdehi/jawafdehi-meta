@@ -75,8 +75,9 @@ Use the following tools and local materials when reviewing:
 ### Stage 1: Retrieve the Published Case
 
 1. Retrieve the Jawafdehi case using the case ID.
-2. Read the published narrative, allegations, entities, timeline, and cited sources.
-3. Build a quick working summary of what the case currently claims.
+2. Save the MCP response to a temporary local Markdown or JSON file before analysis (for example inside the case folder as `tmp/published-case-{case-id}.md` or `tmp/published-case-{case-id}.json`).
+3. Read the published narrative, allegations, entities, timeline, and cited sources from that temporary file.
+4. Build a quick working summary of what the case currently claims.
 
 Capture at least:
 
@@ -126,28 +127,35 @@ Read the **Common pitfalls** section and treat each item as an additional valida
 
 Compare the published case against the authoritative material across these dimensions:
 
-1. Identity
+**Required comparison method (mandatory):**
+
+1. Enumerate **all** Markdown files (`*.md`) under the case folder for the CIAA case (including files inside `sources/` and other case-level notes such as `case-draft.md`, `notes.md`, or similar if present).
+2. Compare the published-case temporary file (from Stage 1) against each Markdown file **one by one**.
+3. For each file, record whether it provides confirming facts, conflicting facts, or missing support for published claims.
+4. Do not skip any Markdown file in the case folder; if a file is unreadable or irrelevant, explicitly note that in findings.
+
+5. Identity
    - Is the CIAA case number correctly linked?
    - Are the defendants, plaintiffs, offices, and institutions named correctly?
 
-2. Allegations
+6. Allegations
    - Do the published allegations match the charge sheet and court framing?
    - Are any claims overstated, under-specified, or unsupported?
 
-3. Amounts and counts
+7. Amounts and counts
    - Check bigo, loss amounts, contract values, quantities, and counts of accused persons.
 
-4. Timeline
+8. Timeline
    - **Critical**: final verdict date and outcome — missing this is always a major issue.
    - **Moderate**: significant orders (stay, acquittal, conviction, reversal, appeal filing).
    - **Good to have**: case filing date and other named milestone hearings.
    - Routine procedural hearing dates do not need to be individually verified.
    - Validate AD/BS conversions when dates appear in both calendars.
 
-5. Procedural status
+9. Procedural status
    - Confirm whether the case is under trial, decided, appealed, stayed, or otherwise updated.
 
-6. Sources
+10. Sources
    - Check whether each major factual claim is backed by a source.
    - Flag weak sourcing, dead links, secondary-only sourcing, or missing official documents.
    - Apply every pitfall from the **Common pitfalls** section of the Knowledge Share document loaded in Stage 2.5.
@@ -188,27 +196,37 @@ If revisions are needed, provide a prioritized edit list.
 Use this structure unless the user asks for something else:
 
 ```markdown
-# Review Summary
+# समीक्षा सारांश
 
-- Published case: <URL>
-- CIAA case number: <case number>
-- Outcome: <approved | approved_with_minor_edits | needs_revision | blocked>
+- प्रकाशित मुद्दा: <URL>
+- CIAA केस नम्बर: <case number>
+- नतिजा: <approved | approved_with_minor_edits | needs_revision | blocked>
 
-## What I Reviewed
-- Published Jawafdehi case content
-- Official case records and source materials consulted
+## मैले समीक्षा गरेको सामग्री
+- प्रकाशित Jawafdehi मुद्दाको सामग्री
+- तुलना गर्न प्रयोग गरिएको temporary published-case फाइलको पाथ
+- स्थानीय केस फोल्डरका समीक्षा गरिएका सबै Markdown फाइलहरूको सूची
+- परामर्श गरिएका आधिकारिक केस रेकर्ड र स्रोत सामग्री
 
-## Findings
-1. [severity] Finding title
-   - Published case says: ...
-   - Record shows: ...
-   - Required fix: ...
-   - Evidence: ...
+## निष्कर्षहरू
+### १. [severity] — <निष्कर्ष शीर्षक>
 
-## Gaps or Unresolved Questions
+- **प्रकाशित मुद्दामा:** ...
+- **अभिलेखले देखाउँछ:** ...
+- **आवश्यक संशोधन:** ...
+- **प्रमाण:** ...
+
+### २. [severity] — <निष्कर्ष शीर्षक>
+
+- **प्रकाशित मुद्दामा:** ...
+- **अभिलेखले देखाउँछ:** ...
+- **आवश्यक संशोधन:** ...
+- **प्रमाण:** ...
+
+## अस्पष्टता वा अनसुल्झिएका प्रश्नहरू
 - ...
 
-## Recommended Next Edits
+## सिफारिस गरिएका अर्को सम्पादनहरू
 1. ...
 2. ...
 3. ...

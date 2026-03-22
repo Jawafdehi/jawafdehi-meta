@@ -33,7 +33,8 @@
         "remote.autoForwardPorts": false,
         "javascript.autoClosingTags": false,
 		    "python.testing.pytestEnabled": true,
-        "window.confirmBeforeClose": true
+        "window.confirmBeforeClose": true,
+        "chat.mcp.autostart": "onlyNew"
       }
     }
   },
