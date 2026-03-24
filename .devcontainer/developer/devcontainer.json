@@ -1,10 +1,12 @@
 {
   "name": "Jawafdehi Developer",
   "postCreateCommand": "./.devcontainer/startup.sh",
-  "forwardPorts": [40321],
+  "forwardPorts": [
+    40321
+  ],
   "customizations": {
     "codespaces": {
-      "permissions": {
+      "repositories": {
         "NewNepal-org/*": {
           "permissions": {
             "contents": "write",
@@ -32,7 +34,7 @@
         "editor.formatOnSave": false,
         "remote.autoForwardPorts": false,
         "javascript.autoClosingTags": false,
-		    "python.testing.pytestEnabled": true,
+        "python.testing.pytestEnabled": true,
         "window.confirmBeforeClose": true,
         "chat.mcp.autostart": "onlyNew"
       }
@@ -42,7 +44,7 @@
     "NGM_DATABASE_URL": {
       "description": "NGM judicial database URL."
     },
-    "JAWAFDEHI_API_BASE_URL": { 
+    "JAWAFDEHI_API_BASE_URL": {
       "description": "Jawafdehi API Base URL."
     },
     "JAWAFDEHI_API_TOKEN": {
