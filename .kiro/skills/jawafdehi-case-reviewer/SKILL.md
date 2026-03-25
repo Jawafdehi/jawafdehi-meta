@@ -37,6 +37,7 @@ Always confirm these inputs at the start:
 
 - Published case URL: must be a Jawafdehi public case URL such as `https://jawafdehi.org/case/210`
 - CIAA case number: usually formatted like `081-CR-0098`
+- Authorized Google email for Workspace MCP calls when Google Docs/Drive retrieval is needed
 
 If the user says something like:
 
@@ -118,7 +119,6 @@ Before cross-checking, retrieve the live Jawafdehi Knowledge Share document to l
 Tool: mcp_workspace_mcp_get_doc_as_markdown
 Parameters:
   document_id: "1-AZedWGhcQjRH4E7a6q1CDWpeBcb_CVqa8S_kRLQCx4"
-  user_google_email: "damo94761@gmail.com"
 ```
 
 Read the **Common pitfalls** section and treat each item as an additional validation rule to apply in Stage 3. The document may also contain case-specific review notes under the **Case Reviews** section — check whether the case being reviewed has an entry there and incorporate any open issues.

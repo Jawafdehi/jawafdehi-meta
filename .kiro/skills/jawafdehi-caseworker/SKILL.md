@@ -67,7 +67,6 @@ Follow this exact sequence:
    ```
    Tool: mcp_workspace_mcp_list_drive_items
    Parameters:
-     - user_google_email: "damo94761@gmail.com"
      - folder_id: "1jJNOtIEfT5kXQ7CTOeVTL-6znxOTIzJe"
    ```
    This lists all fiscal year subfolders (e.g., "CIAA FY 081/082", "CIAA FY 082/083")
@@ -81,7 +80,6 @@ Follow this exact sequence:
    ```
    Tool: mcp_workspace_mcp_list_drive_items
    Parameters:
-     - user_google_email: "damo94761@gmail.com"
      - folder_id: <FY_folder_id_from_step_2>
    ```
    This lists all case folders within that fiscal year
@@ -94,7 +92,6 @@ Follow this exact sequence:
    ```
    Tool: mcp_workspace_mcp_list_drive_items
    Parameters:
-     - user_google_email: "damo94761@gmail.com"
      - folder_id: <case_folder_id_from_step_4>
    ```
    This shows all files available for download

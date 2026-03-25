@@ -29,69 +29,17 @@ This document outlines the MCP tools needed to effectively assist caseworkers in
    7. `mcp_workspace_mcp_get_drive_file_content` - Read various file types from Drive including native Google formats, Office files, and PDFs.
    8. `mcp_workspace_mcp_get_drive_file_download_url` - Download files to local workspace or get temporary download URLs with format export options.
    9. `mcp_workspace_mcp_read_sheet_values` - Read data from Google Sheets to access case timelines and tracking spreadsheets.
-   10. `mcp_workspace_mcp_list_spreadsheet_comments` - List comments from spreadsheets to review collaborative feedback on case data.
-   11. `mcp_workspace_mcp_start_google_auth` - Initiate Google OAuth authentication required before accessing Google Workspace tools.
+  10. `mcp_workspace_mcp_list_spreadsheet_comments` - List comments from spreadsheets to review collaborative feedback on case data.
 
 3. **Fetch MCP Server**
    1. `mcp_fetch_fetch` - Fetch URL content and convert to markdown for accessing web-based resources.
 
 
 ## Notes
-1. Your manager will provide the Google OAuth Client ID/Secrets.
-2. User must be authorized to the OAuth2.0 app; Please reach out to manager for this.
-3. You need to set corret NGM_DATABASE_URL for the MCP server access.
+1. Workspace MCP is configured as a hosted HTTP endpoint (`https://google-auth-internal.jawafdehi.org/mcp/`), so local Google OAuth client env vars are no longer required in devcontainers.
+2. You need to set correct `NGM_DATABASE_URL` for Jawafdehi MCP server access.
 
 
 ## MCP Configuration Example
 
-
-```json
-{
-  "mcpServers": {
-    "workspace-mcp": {
-      "command": "uvx",
-      "args": [
-        "workspace-mcp",
-        "--single-user",
-        "--read-only",
-        "--tools",
-        "drive",
-        "docs",
-        "sheets"
-      ],
-      "env": {
-        "GOOGLE_OAUTH_CLIENT_ID": "xxx",
-        "GOOGLE_OAUTH_CLIENT_SECRET": "yyy",
-        "USER_GOOGLE_EMAIL": "your-email@gmail.com"
-      },
-      "disabled": false
-    },
-    "fetch": {
-      "command": "uvx",
-      "args": [
-        "mcp-server-fetch"
-      ],
-      "env": {},
-      "disabled": false,
-      "autoApprove": []
-    },
-    "jawafdehi": {
-      "command": "${path-to}/services/jawafdehi-mcp/.venv/bin/jawafdehi-mcp",
-      "args": [],
-      "env": {
-        "NGM_DATABASE_URL": "postgresql://ngm-database-url"
-      },
-      "disabled": false,
-      "autoApprove": [
-        "ngm_query_judicial",
-        "get_nes_tags",
-        "search_nes_entities",
-        "get_nes_entities",
-        "likhit_extract",
-        "convert_to_markdown"
-      ],
-      "disabledTools": []
-    }
-  }
-}
-```
+See .vscode/mcp.json.

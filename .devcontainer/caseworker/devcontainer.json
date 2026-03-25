@@ -37,15 +37,6 @@
     },
     "JAWAFDEHI_API_TOKEN": {
       "description": "Jawafdehi API authentication token."
-    },
-    "GOOGLE_OAUTH_CLIENT_ID": {
-      "description": "Google OAuth Client ID"
-    },
-    "GOOGLE_OAUTH_CLIENT_SECRET": {
-      "description": "Google OAuth Client secret"
-    },
-    "USER_GOOGLE_EMAIL": {
-      "description": "Your google email authorized to access Jawafdehi Shared Drive."
     }
   }
 }
