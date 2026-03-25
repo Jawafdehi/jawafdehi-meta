@@ -1,0 +1,8 @@
+# Ignore any local SSL certificates or keys
+*.pem
+*.key
+*.crt
+
+# Ignore any local environment files
+.env
+.env.local
