@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Script to manage branch protection for NewNepal-org repositories using GitHub Rulesets
+# Script to manage branch protection for Jawafdehi repositories using GitHub Rulesets
 # Usage: 
 #   ./github-branch-protection.sh show
 #   ./github-branch-protection.sh plan
@@ -9,7 +9,7 @@
 
 set -euo pipefail
 
-ORG="NewNepal-org"
+ORG="Jawafdehi"
 
 # Repos that have a test-and-lint CI job — these get required_status_checks
 CI_REPOS=(

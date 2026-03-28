@@ -1,18 +1,18 @@
-# NewNepal.org Meta Repo
+# Jawafdehi.org Meta Repo
 
-NewNepal.org is a civic tech organization building open digital infrastructure to empower Nepali citizens with transparent access to information about governance, corruption, and public entities. The organization operates three major platforms: Jawafdehi.org (open database of corruption and accountability cases), Nepal Entity Service/NES (comprehensive database of Nepali public entities including politicians, organizations, and government bodies), and Nepal Governance Modernization/NGM (judicial data collection and governance analysis from Nepal's court system). All platforms emphasize open source code, open data principles, bilingual support (English/Nepali), and complete audit trails to promote transparency and accountability in Nepali governance.
+Jawafdehi.org is a civic tech organization building open digital infrastructure to empower Nepali citizens with transparent access to information about governance, corruption, and public entities. The organization operates three major platforms: Jawafdehi.org (open database of corruption and accountability cases), Nepal Entity Service/NES (comprehensive database of Nepali public entities including politicians, organizations, and government bodies), and Nepal Governance Modernization/NGM (judicial data collection and governance analysis from Nepal's court system). All platforms emphasize open source code, open data principles, bilingual support (English/Nepali), and complete audit trails to promote transparency and accountability in Nepali governance.
 
 ## What This Meta-Repo Is
 
-This meta-repository serves as the central hub for the entire NewNepal.org ecosystem, consolidating all projects, services, infrastructure code, documentation, and research materials in one place.
+This meta-repository serves as the central hub for the entire Jawafdehi.org ecosystem, consolidating all projects, services, infrastructure code, documentation, and research materials in one place.
 
-> Repository: https://github.com/NewNepal-org/newnepal-meta
+> Repository: https://github.com/Jawafdehi/jawafdehi-meta
 
-By centralizing documentation and specifications across multiple services, the meta-repo provides a single source of truth that streamlines agentic development and AI-assisted coding workflows. This architecture enables efficient collaboration, consistent standards, and seamless integration across all NewNepal.org platforms.
+By centralizing documentation and specifications across multiple services, the meta-repo provides a single source of truth that streamlines agentic development and AI-assisted coding workflows. This architecture enables efficient collaboration, consistent standards, and seamless integration across all Jawafdehi.org platforms.
 
-## NewNepal.org Projects
+## Jawafdehi.org Projects
 
-NewNepal.org consists of three major projects, each with their own subcomponents:
+Jawafdehi.org consists of three major projects, each with their own subcomponents:
 
 1. **Jawafdehi.org** - Open database of corruption and accountability
    - **Live Platform**: https://jawafdehi.org
@@ -24,10 +24,7 @@ NewNepal.org consists of three major projects, each with their own subcomponents
 3. **NGM (Nepal Governance Modernization)** - Governance monitoring and analysis
    - Services: `ngm`, `ngm-frontend`
 
-4. **NewNepal.org Website** - Main organizational website
-   - Service: `newnepal-website`
-
-5. **Shared Tools & Infrastructure**
+4. **Shared Tools & Infrastructure**
    - Services: `jawafdehi-mcp` (MCP tools for Jawafdehi, NES, and NGM), `likhit` (document processing), `org-admin-panel` (administrative interface)
 
 ## Key Paths
@@ -55,7 +52,6 @@ NewNepal.org consists of three major projects, each with their own subcomponents
 │   ├── nes-assets/         # NES static assets
 │   ├── ngm/                # Nepal Government Modernization (NGM) project, including judicial data, official PDFs, etc.
 │   ├── ngm-frontend/       # NGM frontend interface (ngm.jawafdehi.org)
-│   ├── newnepal-website/   # NewNepal.org main website
 │   ├── likhit/             # Document processing toolkit (Convert official documents to markdown)
 │   ├── org-admin-panel/    # Administrative interface
 │   └── infra/              # Infrastructure as Code (independent repository)
@@ -78,33 +74,32 @@ Services in this meta-repo are organized as independent repositories. Clone only
 
 ```bash
 # Clone meta-repo (documentation and shared resources)
-git clone git@github.com:NewNepal-org/newnepal-meta.git
+git clone git@github.com:Jawafdehi/jawafdehi-meta.git
 
 # Clone specific service(s) into services/ directory
-cd newnepal-meta/services
-git clone git@github.com:NewNepal-org/JawafdehiAPI.git jawafdehi-api
-git clone git@github.com:NewNepal-org/NepalEntityService.git nes
+cd jawafdehi-meta/services
+git clone git@github.com:Jawafdehi/JawafdehiAPI.git jawafdehi-api
+git clone git@github.com:Jawafdehi/NepalEntityService.git nes
 
 # Or clone all services
-git clone git@github.com:NewNepal-org/JawafdehiAPI.git jawafdehi-api
-git clone git@github.com:NewNepal-org/Jawafdehi.git jawafdehi-frontend
-git clone git@github.com:NewNepal-org/jawafdehi-mcp.git jawafdehi-mcp
-git clone git@github.com:NewNepal-org/NepalEntityService.git nes
-git clone git@github.com:NewNepal-org/NepalEntityService-tundikhel.git nes-tundikhel
-git clone git@github.com:NewNepal-org/NepalEntityService-assets.git nes-assets
-git clone git@github.com:NewNepal-org/ngm.git ngm
-git clone git@github.com:NewNepal-org/ngm-frontend.git ngm-frontend
-git clone git@github.com:NewNepal-org/newnepal-website.git newnepal-website
-git clone git@github.com:NewNepal-org/likhit.git likhit
-git clone git@github.com:NewNepal-org/org-admin-panel.git org-admin-panel
-git clone git@github.com:NewNepal-org/GCP-deployment.git infra
+git clone git@github.com:Jawafdehi/JawafdehiAPI.git jawafdehi-api
+git clone git@github.com:Jawafdehi/Jawafdehi.git jawafdehi-frontend
+git clone git@github.com:Jawafdehi/jawafdehi-mcp.git jawafdehi-mcp
+git clone git@github.com:Jawafdehi/NepalEntityService.git nes
+git clone git@github.com:Jawafdehi/NepalEntityService-tundikhel.git nes-tundikhel
+git clone git@github.com:Jawafdehi/NepalEntityService-assets.git nes-assets
+git clone git@github.com:Jawafdehi/ngm.git ngm
+git clone git@github.com:Jawafdehi/ngm-frontend.git ngm-frontend
+git clone git@github.com:Jawafdehi/likhit.git likhit
+git clone git@github.com:Jawafdehi/org-admin-panel.git org-admin-panel
+git clone git@github.com:Jawafdehi/GCP-deployment.git infra
 ```
 
 For complete setup instructions, dependency management, and development workflows, see `docs/GETTING_STARTED.md`.
 
 ## Documentation Organization
 
-The `/docs` folder contains cross-cutting documentation for the entire NewNepal.org ecosystem:
+The `/docs` folder contains cross-cutting documentation for the entire Jawafdehi.org ecosystem:
 
 **TODO**: Document the complete structure and organization of the `/docs` folder.
 
@@ -130,7 +125,7 @@ The `/docs` folder contains cross-cutting documentation for the entire NewNepal.
 ### Architecture Principles
 - **Meta-repo structure** - Multiple independent service repositories
 - **Work from meta-repo** - Users are expected to always work from the meta-repo, cloning only the services they need
-- **Clone missing services** - If a particular service is needed but doesn't exist locally, clone it: `cd services && git clone git@github.com:NewNepal-org/<repo-name>.git <service-name>`
+- **Clone missing services** - If a particular service is needed but doesn't exist locally, clone it: `cd services && git clone git@github.com:Jawafdehi/<repo-name>.git <service-name>`
 - **Service independence** - Each service has own dependencies, config, and secrets management
 - **Shared infrastructure** - Common IaC in `services/infra/` (independent repository)
 - **Selective cloning** - Clone only the services you need
@@ -187,7 +182,6 @@ cd services/nes/docs
 | **nes-assets** | Static | Jekyll | NES static assets site |
 | **ngm** | Backend | Python, Poetry | Judicial data collection, GitHub Actions, scrapers |
 | **ngm-frontend** | Frontend | React, TypeScript, Vite | NGM frontend interface |
-| **newnepal-website** | Frontend | React, TypeScript, Docusaurus | NewNepal.org main website |
 | **jawafdehi-mcp** | MCP Server | Python, FastMCP | Shared MCP tools for Jawafdehi, NES, and NGM |
 | **likhit** | Toolkit | Python, Poetry | Document processing toolkit |
 | **org-admin-panel** | Frontend | React, TypeScript, Vite | Administrative interface |
@@ -230,7 +224,6 @@ cd services/nes/docs
 - **MCP tools (Jawafdehi, NES, NGM)** → Work in `services/jawafdehi-mcp/`
 - **Document processing** → Work in `services/likhit/`
 - **Admin interface** → Work in `services/org-admin-panel/`
-- **NewNepal.org website** → Work in `services/newnepal-website/`
 - **Infrastructure changes** → Work in `services/infra/` (independent repository)
 
 ### Cross-Service Coordination

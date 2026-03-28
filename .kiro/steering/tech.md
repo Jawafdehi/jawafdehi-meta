@@ -12,7 +12,7 @@
 If a particular service is needed but doesn't exist locally:
 ```bash
 cd services
-git clone git@github.com:NewNepal-org/<repo-name>.git <service-name>
+git clone git@github.com:Jawafdehi/<repo-name>.git <service-name>
 cd ..
 ```
 
@@ -109,22 +109,22 @@ cd services/infra && terraform plan
 ### Selective Cloning
 ```bash
 # Clone meta-repo (documentation and shared resources)
-git clone git@github.com:NewNepal-org/newnepal-meta.git
+git clone git@github.com:Jawafdehi/jawafdehi-meta.git
 
 # Clone specific service(s) into services/ directory
-cd newnepal-meta/services
-git clone git@github.com:NewNepal-org/JawafdehiAPI.git jawafdehi-api
-git clone git@github.com:NewNepal-org/NepalEntityService.git nes
+cd jawafdehi-meta/services
+git clone git@github.com:Jawafdehi/JawafdehiAPI.git jawafdehi-api
+git clone git@github.com:Jawafdehi/NepalEntityService.git nes
 
 # Or clone all services
-git clone git@github.com:NewNepal-org/JawafdehiAPI.git jawafdehi-api
-git clone git@github.com:NewNepal-org/Jawafdehi.git jawafdehi-frontend
-git clone git@github.com:NewNepal-org/NepalEntityService.git nes
-git clone git@github.com:NewNepal-org/NepalEntityService-tundikhel.git nes-tundikhel
-git clone git@github.com:NewNepal-org/NepalEntityService-assets.git nes-assets
-git clone git@github.com:NewNepal-org/newnepal-website.git newnepal-website
-git clone git@github.com:NewNepal-org/ngm.git ngm
-git clone git@github.com:NewNepal-org/GCP-deployment.git infra
+git clone git@github.com:Jawafdehi/JawafdehiAPI.git jawafdehi-api
+git clone git@github.com:Jawafdehi/Jawafdehi.git jawafdehi-frontend
+git clone git@github.com:Jawafdehi/NepalEntityService.git nes
+git clone git@github.com:Jawafdehi/NepalEntityService-tundikhel.git nes-tundikhel
+git clone git@github.com:Jawafdehi/NepalEntityService-assets.git nes-assets
+git clone git@github.com:Jawafdehi/newnepal-website.git newnepal-website
+git clone git@github.com:Jawafdehi/ngm.git ngm
+git clone git@github.com:Jawafdehi/GCP-deployment.git infra
 ```
-git clone https://github.com/NewNepal-org/infra
+git clone https://github.com/Jawafdehi/infra
 ```

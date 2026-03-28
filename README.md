@@ -1,16 +1,16 @@
-# NewNepal.org Meta-Repository
+# Jawafdehi.org Meta-Repository
 
-NewNepal.org is a civic tech organization building open digital infrastructure to empower Nepali citizens with transparent access to information about governance, corruption, and public entities.
+Jawafdehi.org is a civic tech organization building open digital infrastructure to empower Nepali citizens with transparent access to information about governance, corruption, and public entities.
 
-This meta-repository serves as the central hub for the entire NewNepal.org ecosystem, consolidating all projects, services, infrastructure code, documentation, and research materials in one place.
+This meta-repository serves as the central hub for the entire Jawafdehi.org ecosystem, consolidating all projects, services, infrastructure code, documentation, and research materials in one place.
 
-**Repository**: https://github.com/NewNepal-org/newnepal-meta
+**Repository**: https://github.com/Jawafdehi/jawafdehi-meta
 
-By centralizing documentation and specifications across multiple services, the meta-repo provides a single source of truth that streamlines agentic development and AI-assisted coding workflows. This architecture enables efficient collaboration, consistent standards, and seamless integration across all NewNepal.org platforms.
+By centralizing documentation and specifications across multiple services, the meta-repo provides a single source of truth that streamlines agentic development and AI-assisted coding workflows. This architecture enables efficient collaboration, consistent standards, and seamless integration across all Jawafdehi.org platforms.
 
-## NewNepal.org Projects
+## Jawafdehi.org Projects
 
-NewNepal.org consists of four major projects, each with their own subcomponents:
+Jawafdehi.org consists of four major projects, each with their own subcomponents:
 
 1. **Jawafdehi.org** - Open database of corruption and accountability
    - **Live Platform**: https://jawafdehi.org
@@ -22,15 +22,12 @@ NewNepal.org consists of four major projects, each with their own subcomponents:
 3. **NGM (Nepal Governance Modernization)** - Judicial data collection and governance analysis
    - Services: `ngm`
 
-4. **NewNepal.org Website** - Main organizational website
-   - Service: `newnepal-website`
-
 All platforms emphasize open source code, open data principles, bilingual support (English/Nepali), and complete audit trails to promote transparency and accountability in Nepali governance.
 
 ## Who Should Use This Meta Repo?
 
 ### Team Members & Interns
-If you're a **NewNepal.org team member** or **intern**, this meta-repository is designed for you. It provides:
+If you're a **Jawafdehi.org team member** or **intern**, this meta-repository is designed for you. It provides:
 - Complete context for all services and their relationships
 - Shared documentation, research materials, and tooling
 - AI-enriched context for GenAI tools (Cursor, Kiro, GitHub Copilot, etc.)
@@ -43,7 +40,7 @@ If you're an **open source contributor**, you can work directly with individual 
 
 **👉 [Learn More: Contributor Workflows](docs/CONTRIBUTOR_WORKFLOWS.md)**
 
-**Primary open source target**: [Nepal Entity Service (NES)](https://github.com/NewNepal-org/nes)
+**Primary open source target**: [Nepal Entity Service (NES)](https://github.com/Jawafdehi/nes)
 
 ## Available Services
 
@@ -51,14 +48,13 @@ Services are independent repositories that you can clone selectively - you only 
 
 | Service | Description | Repository | Clone Command |
 |---------|-------------|------------|---------------|
-| **jawafdehi-api** | Django accountability API | [NewNepal-org/JawafdehiAPI](https://github.com/NewNepal-org/JawafdehiAPI) | `git clone git@github.com:NewNepal-org/JawafdehiAPI.git jawafdehi-api` |
-| **jawafdehi-frontend** | React public frontend | [NewNepal-org/Jawafdehi](https://github.com/NewNepal-org/Jawafdehi) | `git clone git@github.com:NewNepal-org/Jawafdehi.git jawafdehi-frontend` |
-| **nes** | Nepal Entity Service database | [NewNepal-org/NepalEntityService](https://github.com/NewNepal-org/NepalEntityService) | `git clone git@github.com:NewNepal-org/NepalEntityService.git nes` |
-| **nes-tundikhel** | NES explorer UI | [NewNepal-org/NepalEntityService-tundikhel](https://github.com/NewNepal-org/NepalEntityService-tundikhel) | `git clone git@github.com:NewNepal-org/NepalEntityService-tundikhel.git nes-tundikhel` |
-| **nes-assets** | NES static assets site | [NewNepal-org/NepalEntityService-assets](https://github.com/NewNepal-org/NepalEntityService-assets) | `git clone git@github.com:NewNepal-org/NepalEntityService-assets.git nes-assets` |
-| **newnepal-website** | NewNepal.org main website | [NewNepal-org/newnepal-website](https://github.com/NewNepal-org/newnepal-website) | `git clone git@github.com:NewNepal-org/newnepal-website.git newnepal-website` |
-| **ngm** | Nepal Governance Modernization | [NewNepal-org/ngm](https://github.com/NewNepal-org/ngm) | `git clone git@github.com:NewNepal-org/ngm.git ngm` |
-| **infra** | Infrastructure as Code (Terraform) | [NewNepal-org/GCP-deployment](https://github.com/NewNepal-org/GCP-deployment) | `git clone git@github.com:NewNepal-org/GCP-deployment.git infra` |
+| **jawafdehi-api** | Django accountability API | [Jawafdehi/JawafdehiAPI](https://github.com/Jawafdehi/JawafdehiAPI) | `git clone git@github.com:Jawafdehi/JawafdehiAPI.git jawafdehi-api` |
+| **jawafdehi-frontend** | React public frontend | [Jawafdehi/Jawafdehi](https://github.com/Jawafdehi/Jawafdehi) | `git clone git@github.com:Jawafdehi/Jawafdehi.git jawafdehi-frontend` |
+| **nes** | Nepal Entity Service database | [Jawafdehi/NepalEntityService](https://github.com/Jawafdehi/NepalEntityService) | `git clone git@github.com:Jawafdehi/NepalEntityService.git nes` |
+| **nes-tundikhel** | NES explorer UI | [Jawafdehi/NepalEntityService-tundikhel](https://github.com/Jawafdehi/NepalEntityService-tundikhel) | `git clone git@github.com:Jawafdehi/NepalEntityService-tundikhel.git nes-tundikhel` |
+| **nes-assets** | NES static assets site | [Jawafdehi/NepalEntityService-assets](https://github.com/Jawafdehi/NepalEntityService-assets) | `git clone git@github.com:Jawafdehi/NepalEntityService-assets.git nes-assets` |
+| **ngm** | Nepal Governance Modernization | [Jawafdehi/ngm](https://github.com/Jawafdehi/ngm) | `git clone git@github.com:Jawafdehi/ngm.git ngm` |
+| **infra** | Infrastructure as Code (Terraform) | [Jawafdehi/GCP-deployment](https://github.com/Jawafdehi/GCP-deployment) | `git clone git@github.com:Jawafdehi/GCP-deployment.git infra` |
 
 ## Repository Structure
 
@@ -79,7 +75,6 @@ Services are independent repositories that you can clone selectively - you only 
 │   ├── nes/                # Nepal entity database
 │   ├── nes-tundikhel/      # NES explorer UI
 │   ├── nes-assets/         # NES static assets
-│   ├── newnepal-website/   # NewNepal.org main website
 │   └── infra/              # Infrastructure as Code (independent repository)
 │       ├── terraform/      # Terraform configuration
 │       └── misc/           # Build configs and scripts

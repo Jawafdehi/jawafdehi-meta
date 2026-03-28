@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Jawafdehi MCP (Model Context Protocol) server is a Python-based MCP server that provides AI assistants with tools to query NewNepal.org data sources. The server exposes six tools across three data sources: NGM (Nepal Governance Modernization) judicial database, NES (Nepal Entity Service) entity database, and Jawafdehi corruption case API. The server is designed for frictionless installation by non-technical users using `uv` package manager and integrates seamlessly with IDEs like VS Code, Kiro, and Cursor.
+The Jawafdehi MCP (Model Context Protocol) server is a Python-based MCP server that provides AI assistants with tools to query Jawafdehi.org data sources. The server exposes six tools across three data sources: NGM (Nepal Governance Modernization) judicial database, NES (Nepal Entity Service) entity database, and Jawafdehi corruption case API. The server is designed for frictionless installation by non-technical users using `uv` package manager and integrates seamlessly with IDEs like VS Code, Kiro, and Cursor.
 
 ## Architecture
 
@@ -27,7 +27,7 @@ graph TB
     
     subgraph "Data Sources"
         NGMDB[(NGM PostgreSQL<br/>Judicial Cases)]
-        NESAPI[NES API<br/>nes.newnepal.org]
+        NESAPI[NES API<br/>nes.jawafdehi.org]
         JawafAPI[Jawafdehi API<br/>portal.jawafdehi.org]
         
         NGMTool --> NGMDB
@@ -98,7 +98,7 @@ The MCP library handles tool discovery and registration when the server starts. 
 class ConfigManager:
     ngm_database_url: str | None
     jawafdehi_api_url: str  # Default: https://portal.jawafdehi.org
-    nes_api_url: str        # Default: https://nes.newnepal.org
+    nes_api_url: str        # Default: https://nes.jawafdehi.org
     
     @classmethod
     def from_env(cls) -> ConfigManager:
@@ -115,7 +115,7 @@ class ConfigManager:
 - Load environment variables with defaults for API URLs
 - NGM_DATABASE_URL is optional (no default)
 - JAWAFDEHI_API_URL defaults to https://portal.jawafdehi.org
-- NES_API_URL defaults to https://nes.newnepal.org
+- NES_API_URL defaults to https://nes.jawafdehi.org
 - Validate configuration per tool
 - All tools are registered regardless of configuration
 - Provide clear errors when tools are called without required config
@@ -171,7 +171,7 @@ async def ngm_query_judicial(query: str) -> dict:
 **Purpose**: Query and interact with Nepal Entity Service
 
 **Required Environment Variables**:
-- `NES_API_URL`: Base URL for NES API (e.g., https://nes.newnepal.org)
+- `NES_API_URL`: Base URL for NES API (e.g., https://nes.jawafdehi.org)
 
 **Interface**:
 ```python
@@ -434,7 +434,7 @@ All tools return responses in a consistent format:
 {
     "NGM_DATABASE_URL": "postgresql://user:password@host:5432/ngm_db",  # Optional, no default
     "JAWAFDEHI_API_URL": "https://portal.jawafdehi.org",                # Optional, has default
-    "NES_API_URL": "https://nes.newnepal.org"                           # Optional, has default
+    "NES_API_URL": "https://nes.jawafdehi.org"                           # Optional, has default
 }
 ```
 
@@ -443,9 +443,9 @@ All tools return responses in a consistent format:
 | Tool | Required Environment Variable | Default Value |
 |------|------------------------------|---------------|
 | `ngm_query_judicial` | `NGM_DATABASE_URL` | None (required) |
-| `get_entity` | `NES_API_URL` | `https://nes.newnepal.org` |
-| `search_entities` | `NES_API_URL` | `https://nes.newnepal.org` |
-| `submit_nes_change` | `NES_API_URL` | `https://nes.newnepal.org` |
+| `get_entity` | `NES_API_URL` | `https://nes.jawafdehi.org` |
+| `search_entities` | `NES_API_URL` | `https://nes.jawafdehi.org` |
+| `submit_nes_change` | `NES_API_URL` | `https://nes.jawafdehi.org` |
 | `get_jawafdehi_case` | `JAWAFDEHI_API_URL` | `https://portal.jawafdehi.org` |
 | `search_jawafdehi_cases` | `JAWAFDEHI_API_URL` | `https://portal.jawafdehi.org` |
 
@@ -453,7 +453,7 @@ All tools return responses in a consistent format:
 - All tools are registered at server startup regardless of configuration
 - NGM_DATABASE_URL has no default - tool fails at runtime if not provided
 - JAWAFDEHI_API_URL defaults to `https://portal.jawafdehi.org`
-- NES_API_URL defaults to `https://nes.newnepal.org`
+- NES_API_URL defaults to `https://nes.jawafdehi.org`
 - NGM_DATABASE_URL must be valid PostgreSQL connection string (if provided)
 - JAWAFDEHI_API_URL and NES_API_URL must be valid HTTPS URLs
 - Tools return clear error messages when called without required configuration
@@ -791,7 +791,7 @@ Users install via `uv` without manual dependency management:
 
 ```bash
 # Automatic installation via MCP config
-uvx --from git+https://github.com/NewNepal-org/jawafdehi-mcp jawafdehi-mcp
+uvx --from git+https://github.com/Jawafdehi/jawafdehi-mcp jawafdehi-mcp
 ```
 
 Developers working on the server:
@@ -799,7 +799,7 @@ Developers working on the server:
 ```bash
 # Clone and install for development
 cd services
-git clone https://github.com/NewNepal-org/jawafdehi-mcp.git
+git clone https://github.com/Jawafdehi/jawafdehi-mcp.git
 cd jawafdehi-mcp
 uv sync
 uv run pytest
@@ -827,7 +827,7 @@ brew install uv
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-**Step 2**: Get database credentials from NewNepal.org team
+**Step 2**: Get database credentials from Jawafdehi.org team
 
 **Step 3**: Add MCP configuration to IDE settings file
 
@@ -839,7 +839,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
   "mcpServers": {
     "newnepal": {
       "command": "uvx",
-      "args": ["--from", "git+https://github.com/NewNepal-org/jawafdehi-mcp", "jawafdehi-mcp"],
+      "args": ["--from", "git+https://github.com/Jawafdehi/jawafdehi-mcp", "jawafdehi-mcp"],
       "env": {
         "NGM_DATABASE_URL": "postgresql://user:password@host:5432/ngm_db"
         // JAWAFDEHI_API_URL and NES_API_URL use defaults if not provided
@@ -855,11 +855,11 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 
 ### For Developers
 
-**Step 1**: Clone repository into newnepal-meta
+**Step 1**: Clone repository into jawafdehi-meta
 
 ```bash
-cd newnepal-meta/services
-git clone https://github.com/NewNepal-org/jawafdehi-mcp.git
+cd jawafdehi-meta/services
+git clone https://github.com/Jawafdehi/jawafdehi-mcp.git
 cd jawafdehi-mcp
 ```
 
@@ -883,11 +883,11 @@ uv run pytest
     "newnepal": {
       "command": "uv",
       "args": ["run", "jawafdehi-mcp"],
-      "cwd": "/absolute/path/to/newnepal-meta/services/jawafdehi-mcp",
+      "cwd": "/absolute/path/to/jawafdehi-meta/services/jawafdehi-mcp",
       "env": {
         "NGM_DATABASE_URL": "postgresql://...",
         "JAWAFDEHI_API_URL": "https://portal.jawafdehi.org",
-        "NES_API_URL": "https://nes.newnepal.org"
+        "NES_API_URL": "https://nes.jawafdehi.org"
       }
     }
   }

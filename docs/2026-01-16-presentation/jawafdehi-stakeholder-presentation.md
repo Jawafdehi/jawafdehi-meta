@@ -36,7 +36,7 @@ Create a comprehensive, transparent, and accessible database of corruption cases
 
 ## Meet Our Team
 
-- **Damodar Dahal** (Founder, NewNepal.org | Software Engineer @ AWS)
+- **Damodar Dahal** (Founder, Jawafdehi.org | Software Engineer @ AWS)
 - **Shishir Bashyal** (CEO, Proma.ai | Volunteer, Let's Build Nepal)
 - **Medha Sharma** (President, Visible Impact | Volunteer, Let's Build Nepal)
 - **Jenish Khanal** (Computer Engineering Student | Technical Assistant, Gandaki University)
@@ -67,7 +67,7 @@ AI-assisted data enrichment system that transforms raw documents into structured
 - **Beta Website**: https://beta.jawafdehi.org (live now)
 - **AgniAI**: Under development, expected launch second week of January
 - **Jawafdehi API**: https://portal.jawafdehi.org
-- **Entity Database**: https://nes.newnepal.org
+- **Entity Database**: https://nes.jawafdehi.org
 
 ---
 
@@ -131,7 +131,7 @@ AI-assisted data enrichment system that transforms raw documents into structured
 
 - **Website**: https://jawafdehi.org
 - **Beta Platform**: https://beta.jawafdehi.org
-- **GitHub**: https://github.com/NewNepal-org
+- **GitHub**: https://github.com/Jawafdehi
 - **Email**: damo94761@gmail.com
 - **LinkedIn**: linkedin.com/in/damo-da/
 

@@ -20,9 +20,9 @@ Likhit is composed of three services that work together:
 
 > **Design principle:** `likhit` should be **thin**. It must minimize its own dependencies so that JawafdehiAPI can import it without pulling in large or conflicting packages. Heavy optional dependencies (e.g. OCR engines, alternative PDF backends) should be extras, not hard requirements.
 
-- **Likhit** (`github.com/NewNepal-org/likhit`) — Python library + CLI, standalone repository. Handles all document parsing and conversion locally using font-based text extraction. Can be used directly from the command line by developers or data contributors, or called as a Python library by the API.
+- **Likhit** (`github.com/Jawafdehi/likhit`) — Python library + CLI, standalone repository. Handles all document parsing and conversion locally using font-based text extraction. Can be used directly from the command line by developers or data contributors, or called as a Python library by the API.
 - **JawafdehiAPI** (Django) — imports Likhit as a Python dependency and wraps it in a new `likhit` Django module. Exposes a `POST /api/likhit/extract/` endpoint. Accessible to **any logged-in Jawafdehi user** via DRF token-based authentication.
-- **Likhit-frontend** (`github.com/NewNepal-org/likhit-frontend`) — TypeScript / React frontend that calls the JawafdehiAPI endpoint. Lets users upload or link to a document, preview the converted Markdown, and attach the output directly to a Jawafdehi case as an evidence source.
+- **Likhit-frontend** (`github.com/Jawafdehi/likhit-frontend`) — TypeScript / React frontend that calls the JawafdehiAPI endpoint. Lets users upload or link to a document, preview the converted Markdown, and attach the output directly to a Jawafdehi case as an evidence source.
 
 ```mermaid
 sequenceDiagram

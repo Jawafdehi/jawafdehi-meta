@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The Jawafdehi MCP Server is a Python-based Model Context Protocol (MCP) server that provides AI assistants with tools to query NewNepal.org data sources. The server enables AI assistants in IDEs (VS Code, Kiro, Cursor) to access three critical data sources: NGM (Nepal Governance Modernization) judicial database, NES (Nepal Entity Service) entity database, and Jawafdehi corruption case API. The system is designed for frictionless installation by non-technical users using the `uv` package manager and supports graceful degradation when data sources are unavailable.
+The Jawafdehi MCP Server is a Python-based Model Context Protocol (MCP) server that provides AI assistants with tools to query Jawafdehi.org data sources. The server enables AI assistants in IDEs (VS Code, Kiro, Cursor) to access three critical data sources: NGM (Nepal Governance Modernization) judicial database, NES (Nepal Entity Service) entity database, and Jawafdehi corruption case API. The system is designed for frictionless installation by non-technical users using the `uv` package manager and supports graceful degradation when data sources are unavailable.
 
 ## Glossary
 
@@ -29,7 +29,7 @@ The Jawafdehi MCP Server is a Python-based Model Context Protocol (MCP) server t
 1. WHEN the MCP_Server starts, THE MCP_Server SHALL load environment variables from the runtime environment
 2. WHEN the MCP_Server starts, THE MCP_Server SHALL register all six tools regardless of configuration
 3. THE ConfigManager SHALL set JAWAFDEHI_API_URL to `https://portal.jawafdehi.org` if not provided
-4. THE ConfigManager SHALL set NES_API_URL to `https://nes.newnepal.org` if not provided
+4. THE ConfigManager SHALL set NES_API_URL to `https://nes.jawafdehi.org` if not provided
 5. THE ConfigManager SHALL validate NGM_DATABASE_URL as a valid PostgreSQL connection string when provided
 6. THE ConfigManager SHALL validate NES_API_URL as a valid HTTPS URL
 7. THE ConfigManager SHALL validate JAWAFDEHI_API_URL as a valid HTTPS URL
@@ -164,7 +164,7 @@ The Jawafdehi MCP Server is a Python-based Model Context Protocol (MCP) server t
 
 ### Requirement 11: Installation and Setup
 
-**User Story:** As a non-technical user, I want to install the MCP server with minimal steps, so that I can start using NewNepal.org data sources in my IDE without complex configuration.
+**User Story:** As a non-technical user, I want to install the MCP server with minimal steps, so that I can start using Jawafdehi.org data sources in my IDE without complex configuration.
 
 #### Acceptance Criteria
 
@@ -174,7 +174,7 @@ The Jawafdehi MCP Server is a Python-based Model Context Protocol (MCP) server t
 4. WHEN a user provides environment variables in the MCP configuration, THE MCP_Server SHALL load them at startup
 5. THE installation process SHALL not require manual dependency management or Python environment setup
 6. WHEN a user does not provide JAWAFDEHI_API_URL, THE server SHALL use `https://portal.jawafdehi.org` as default
-7. WHEN a user does not provide NES_API_URL, THE server SHALL use `https://nes.newnepal.org` as default
+7. WHEN a user does not provide NES_API_URL, THE server SHALL use `https://nes.jawafdehi.org` as default
 
 ### Requirement 12: Performance and Resource Management
 

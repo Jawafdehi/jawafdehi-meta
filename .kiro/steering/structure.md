@@ -1,9 +1,9 @@
 # Meta-Repo Structure Guide
 
 ## Repository Overview
-NewNepal.org meta-repository containing multiple independent services for Nepal's civic tech ecosystem. This meta-repo serves as the central hub, consolidating all projects, services, infrastructure code, documentation, and research materials.
+Jawafdehi.org meta-repository containing multiple independent services for Nepal's civic tech ecosystem. This meta-repo serves as the central hub, consolidating all projects, services, infrastructure code, documentation, and research materials.
 
-> Repository: https://github.com/NewNepal-org/newnepal-meta
+> Repository: https://github.com/Jawafdehi/jawafdehi-meta
 
 ## Directory Structure
 
@@ -22,7 +22,7 @@ NewNepal.org meta-repository containing multiple independent services for Nepal'
 │   ├── nes/                # Nepal entity database
 │   ├── nes-tundikhel/      # NES explorer UI
 │   ├── nes-assets/         # NES static assets
-│   ├── newnepal-website/   # NewNepal.org main website
+│   ├── newnepal-website/   # Jawafdehi.org main website
 │   └── infra/              # Infrastructure as Code (independent repository)
 │       ├── terraform/      # Terraform configuration
 │       └── misc/           # Build configs and scripts
@@ -72,7 +72,7 @@ For full details on repository setup and selective cloning, see docs/GETTING_STA
 - Structures court case information
 - Provides data for governance analysis
 
-### NewNepal.org Website
+### Jawafdehi.org Website
 **newnepal-website** (Main Website)
 - Organizational website
 - Project information and documentation
@@ -106,22 +106,22 @@ For full details on repository setup and selective cloning, see docs/GETTING_STA
 ### Selective Service Cloning
 ```bash
 # Clone meta-repo (documentation and shared resources)
-git clone git@github.com:NewNepal-org/newnepal-meta.git
+git clone git@github.com:Jawafdehi/jawafdehi-meta.git
 
 # Clone specific service(s) into services/ directory
-cd newnepal-meta/services
-git clone git@github.com:NewNepal-org/JawafdehiAPI.git jawafdehi-api
-git clone git@github.com:NewNepal-org/NepalEntityService.git nes
+cd jawafdehi-meta/services
+git clone git@github.com:Jawafdehi/JawafdehiAPI.git jawafdehi-api
+git clone git@github.com:Jawafdehi/NepalEntityService.git nes
 
 # Or clone all services
-git clone git@github.com:NewNepal-org/JawafdehiAPI.git jawafdehi-api
-git clone git@github.com:NewNepal-org/Jawafdehi.git jawafdehi-frontend
-git clone git@github.com:NewNepal-org/NepalEntityService.git nes
-git clone git@github.com:NewNepal-org/NepalEntityService-tundikhel.git nes-tundikhel
-git clone git@github.com:NewNepal-org/NepalEntityService-assets.git nes-assets
-git clone git@github.com:NewNepal-org/newnepal-website.git newnepal-website
-git clone git@github.com:NewNepal-org/ngm.git ngm
-git clone git@github.com:NewNepal-org/GCP-deployment.git infra
+git clone git@github.com:Jawafdehi/JawafdehiAPI.git jawafdehi-api
+git clone git@github.com:Jawafdehi/Jawafdehi.git jawafdehi-frontend
+git clone git@github.com:Jawafdehi/NepalEntityService.git nes
+git clone git@github.com:Jawafdehi/NepalEntityService-tundikhel.git nes-tundikhel
+git clone git@github.com:Jawafdehi/NepalEntityService-assets.git nes-assets
+git clone git@github.com:Jawafdehi/newnepal-website.git newnepal-website
+git clone git@github.com:Jawafdehi/ngm.git ngm
+git clone git@github.com:Jawafdehi/GCP-deployment.git infra
 ```
 
 ## Key Integration Points

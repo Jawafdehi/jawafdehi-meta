@@ -2,7 +2,7 @@
 
 ## Overview
 
-This implementation plan creates a Python-based MCP (Model Context Protocol) server that provides AI assistants with tools to query NewNepal.org data sources. The server exposes six tools across three data sources: NGM judicial database, NES entity database, and Jawafdehi corruption case API. Implementation follows a phased approach prioritizing core infrastructure and high-priority tools first.
+This implementation plan creates a Python-based MCP (Model Context Protocol) server that provides AI assistants with tools to query Jawafdehi.org data sources. The server exposes six tools across three data sources: NGM judicial database, NES entity database, and Jawafdehi corruption case API. Implementation follows a phased approach prioritizing core infrastructure and high-priority tools first.
 
 ## Tasks
 
@@ -19,7 +19,7 @@ This implementation plan creates a Python-based MCP (Model Context Protocol) ser
     - Create `src/jawafdehi_mcp/config.py` with `ConfigManager` class
     - Implement `from_env()` class method to load environment variables with defaults
     - Set JAWAFDEHI_API_URL default to `https://portal.jawafdehi.org`
-    - Set NES_API_URL default to `https://nes.newnepal.org`
+    - Set NES_API_URL default to `https://nes.jawafdehi.org`
     - NGM_DATABASE_URL has no default (optional)
     - Implement `get_tool_config()` method to return tool-specific configuration
     - Implement `is_tool_enabled()` method to check if tool has required config
@@ -34,7 +34,7 @@ This implementation plan creates a Python-based MCP (Model Context Protocol) ser
     - Test loading partial environment variables (NGM_DATABASE_URL missing)
     - Test loading no environment variables (all defaults applied)
     - Test JAWAFDEHI_API_URL defaults to `https://portal.jawafdehi.org`
-    - Test NES_API_URL defaults to `https://nes.newnepal.org`
+    - Test NES_API_URL defaults to `https://nes.jawafdehi.org`
     - Test NGM_DATABASE_URL has no default
     - Test URL validation (HTTPS requirement)
     - Test PostgreSQL connection string validation
@@ -177,7 +177,7 @@ This implementation plan creates a Python-based MCP (Model Context Protocol) ser
   - [ ] 3.3 Implement get_entity tool (NES)
     - Create `src/jawafdehi_mcp/tools/nes.py`
     - Implement `get_entity()` function with `@mcp_tool` decorator
-    - Use NES_API_URL from config (defaults to `https://nes.newnepal.org`)
+    - Use NES_API_URL from config (defaults to `https://nes.jawafdehi.org`)
     - Use `HTTPClientManager` to make GET request to NES API
     - Parse entity response (id, type, names, relationships, metadata)
     - Format response with consistent structure
@@ -250,7 +250,7 @@ This implementation plan creates a Python-based MCP (Model Context Protocol) ser
 - [ ] 5. Phase 3: Priority 2 Tools (Search Operations)
   - [ ] 5.1 Implement search_entities tool (NES)
     - Add `search_entities()` function to `src/jawafdehi_mcp/tools/nes.py`
-    - Use NES_API_URL from config (defaults to `https://nes.newnepal.org`)
+    - Use NES_API_URL from config (defaults to `https://nes.jawafdehi.org`)
     - Accept query, entity_type, and limit parameters
     - Default limit to 20, cap at 100
     - Build query parameters including entity_type filter if provided
@@ -323,7 +323,7 @@ This implementation plan creates a Python-based MCP (Model Context Protocol) ser
 - [ ] 7. Phase 4: Priority 3 Tools (Write Operations)
   - [ ] 7.1 Implement submit_nes_change tool
     - Add `submit_nes_change()` function to `src/jawafdehi_mcp/tools/nes.py`
-    - Use NES_API_URL from config (defaults to `https://nes.newnepal.org`)
+    - Use NES_API_URL from config (defaults to `https://nes.jawafdehi.org`)
     - Accept action, payload, and change_description parameters
     - Use `HTTPClientManager` to make POST request to NES API
     - Parse submission response (queue_item_id, status, message)

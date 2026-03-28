@@ -792,7 +792,7 @@ samples/
 - Provide clear installation instructions
 
 **GitHub Repository:**
-- Repository: `github.com/NewNepal-org/likhit`
+- Repository: `github.com/Jawafdehi/likhit`
 - Include comprehensive README with examples
 - Provide CONTRIBUTING.md for contributors
 - Set up GitHub Actions for CI/CD

@@ -7,7 +7,7 @@
   "customizations": {
     "codespaces": {
       "repositories": {
-        "NewNepal-org/*": {
+        "Jawafdehi/*": {
           "permissions": {
             "contents": "write",
             "pull_request": "write",

@@ -1,17 +1,17 @@
-# Getting Started with NewNepal.org
+# Getting Started with Jawafdehi.org
 
-Welcome to NewNepal.org! This guide will help you get started whether you're a team member, intern, or open source contributor.
+Welcome to Jawafdehi.org! This guide will help you get started whether you're a team member, intern, or open source contributor.
 
 ## For Team Members and Interns
 
 ### 1. Clone the Meta Repository
 
 ```bash
-git clone git@github.com:NewNepal-org/newnepal-meta.git
-cd newnepal-meta
+git clone git@github.com:Jawafdehi/jawafdehi-meta.git
+cd jawafdehi-meta
 ```
 
-This gives you the meta-repo structure including documentation, research materials, and tooling for all NewNepal.org projects (Jawafdehi, NES, NGM).
+This gives you the meta-repo structure including documentation, research materials, and tooling for all Jawafdehi.org projects (Jawafdehi, NES, NGM).
 
 ### 2. Clone the Services You Need
 
@@ -21,24 +21,24 @@ Clone only the services you're working on into the services/ directory:
 cd services
 
 # For Jawafdehi frontend work
-git clone git@github.com:NewNepal-org/Jawafdehi.git jawafdehi-frontend
+git clone git@github.com:Jawafdehi/Jawafdehi.git jawafdehi-frontend
 
 # For Jawafdehi backend work
-git clone git@github.com:NewNepal-org/JawafdehiAPI.git jawafdehi-api
-git clone git@github.com:NewNepal-org/NepalEntityService.git nes
+git clone git@github.com:Jawafdehi/JawafdehiAPI.git jawafdehi-api
+git clone git@github.com:Jawafdehi/NepalEntityService.git nes
 
 # For NGM (judicial data) work
-git clone git@github.com:NewNepal-org/ngm.git ngm
-git clone git@github.com:NewNepal-org/NepalEntityService.git nes
+git clone git@github.com:Jawafdehi/ngm.git ngm
+git clone git@github.com:Jawafdehi/NepalEntityService.git nes
 
 # For infrastructure work
-git clone git@github.com:NewNepal-org/GCP-deployment.git infra
+git clone git@github.com:Jawafdehi/GCP-deployment.git infra
 
 # For full-stack Jawafdehi work
-git clone git@github.com:NewNepal-org/JawafdehiAPI.git jawafdehi-api
-git clone git@github.com:NewNepal-org/Jawafdehi.git jawafdehi-frontend
-git clone git@github.com:NewNepal-org/NepalEntityService.git nes
-git clone git@github.com:NewNepal-org/GCP-deployment.git infra
+git clone git@github.com:Jawafdehi/JawafdehiAPI.git jawafdehi-api
+git clone git@github.com:Jawafdehi/Jawafdehi.git jawafdehi-frontend
+git clone git@github.com:Jawafdehi/NepalEntityService.git nes
+git clone git@github.com:Jawafdehi/GCP-deployment.git infra
 
 cd ..
 ```
@@ -88,7 +88,7 @@ Visit our [Trello board](https://trello.com/b/zSNsFJvU/jawafdehiorg) to see curr
 
 ### Quick Start
 
-1. **Choose a service** - We recommend starting with [Nepal Entity Service (NES)](https://github.com/NewNepal-org/nes)
+1. **Choose a service** - We recommend starting with [Nepal Entity Service (NES)](https://github.com/Jawafdehi/nes)
 2. **Fork the repository** - Click "Fork" on GitHub
 3. **Clone your fork**:
    ```bash
@@ -103,15 +103,15 @@ Visit our [Trello board](https://trello.com/b/zSNsFJvU/jawafdehiorg) to see curr
 
 | Service | Good For | Repository | Clone Command |
 |---------|----------|------------|---------------|
-| **nes** | Python, data processing, entity management | [NewNepal-org/NepalEntityService](https://github.com/NewNepal-org/NepalEntityService) | `git clone git@github.com:NewNepal-org/NepalEntityService.git nes` |
-| **jawafdehi-api** | Django, REST APIs, backend | [NewNepal-org/JawafdehiAPI](https://github.com/NewNepal-org/JawafdehiAPI) | `git clone git@github.com:NewNepal-org/JawafdehiAPI.git jawafdehi-api` |
-| **jawafdehi-frontend** | React, TypeScript, UI/UX | [NewNepal-org/Jawafdehi](https://github.com/NewNepal-org/Jawafdehi) | `git clone git@github.com:NewNepal-org/Jawafdehi.git jawafdehi-frontend` |
-| **nes-tundikhel** | React, data visualization | [NewNepal-org/NepalEntityService-tundikhel](https://github.com/NewNepal-org/NepalEntityService-tundikhel) | `git clone git@github.com:NewNepal-org/NepalEntityService-tundikhel.git nes-tundikhel` |
-| **ngm** | Python, web scraping, judicial data | [NewNepal-org/ngm](https://github.com/NewNepal-org/ngm) | `git clone git@github.com:NewNepal-org/ngm.git ngm` |
+| **nes** | Python, data processing, entity management | [Jawafdehi/NepalEntityService](https://github.com/Jawafdehi/NepalEntityService) | `git clone git@github.com:Jawafdehi/NepalEntityService.git nes` |
+| **jawafdehi-api** | Django, REST APIs, backend | [Jawafdehi/JawafdehiAPI](https://github.com/Jawafdehi/JawafdehiAPI) | `git clone git@github.com:Jawafdehi/JawafdehiAPI.git jawafdehi-api` |
+| **jawafdehi-frontend** | React, TypeScript, UI/UX | [Jawafdehi/Jawafdehi](https://github.com/Jawafdehi/Jawafdehi) | `git clone git@github.com:Jawafdehi/Jawafdehi.git jawafdehi-frontend` |
+| **nes-tundikhel** | React, data visualization | [Jawafdehi/NepalEntityService-tundikhel](https://github.com/Jawafdehi/NepalEntityService-tundikhel) | `git clone git@github.com:Jawafdehi/NepalEntityService-tundikhel.git nes-tundikhel` |
+| **ngm** | Python, web scraping, judicial data | [Jawafdehi/ngm](https://github.com/Jawafdehi/ngm) | `git clone git@github.com:Jawafdehi/ngm.git ngm` |
 
 ## Understanding the Architecture
 
-### NewNepal.org Projects
+### Jawafdehi.org Projects
 
 1. **Jawafdehi.org** - Open database of corruption and accountability
 2. **NES (Nepal Entity Service)** - Comprehensive database of Nepali public entities

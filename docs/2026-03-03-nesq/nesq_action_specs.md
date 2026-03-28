@@ -12,7 +12,7 @@ Every queue item has these fields:
 | `payload` | object | Action-specific data (schemas below) |
 | `change_description` | string (required) | Description of the change, stored on the queue item |
 
-The processor uses the NES [PublicationService](file:///Users/kwame/Documents/projects/newnepal/newnepal-meta/services/nes/nes/services/publication/service.py#34-681) to execute these actions against the NES [FileDatabase](file:///Users/kwame/Documents/projects/newnepal/newnepal-meta/services/nes/nes/database/file_database.py#43-1271).
+The processor uses the NES [PublicationService](file:///Users/kwame/Documents/projects/newnepal/jawafdehi-meta/services/nes/nes/services/publication/service.py#34-681) to execute these actions against the NES [FileDatabase](file:///Users/kwame/Documents/projects/newnepal/jawafdehi-meta/services/nes/nes/database/file_database.py#43-1271).
 
 > [!NOTE]
 > When the processor persists to NES DB, it appends the submitter's username to the change description:
@@ -78,11 +78,11 @@ Creates a new entity in the NES database.
 
 ### Validation Rules
 
-1. `entity_type` — **required**, must be one of: `person`, `organization`, [location](file:///Users/kwame/Documents/projects/newnepal/newnepal-meta/services/nes/nes/core/models/location.py#49-54), `project`
+1. `entity_type` — **required**, must be one of: `person`, `organization`, [location](file:///Users/kwame/Documents/projects/newnepal/jawafdehi-meta/services/nes/nes/core/models/location.py#49-54), `project`
 2. `entity_data.slug` — **required**, 2-100 chars, lowercase alphanumeric with hyphens only
-3. `entity_data.names` — **required**, at least one entry with `kind: "PRIMARY"`, each name must have [en](file:///Users/kwame/Documents/projects/newnepal/newnepal-meta/services/nes/nes/core/models/person.py#13-19) or [ne](file:///Users/kwame/Documents/projects/newnepal/newnepal-meta/services/nes/nes/core/models/organization.py#23-27) (or both)
+3. `entity_data.names` — **required**, at least one entry with `kind: "PRIMARY"`, each name must have [en](file:///Users/kwame/Documents/projects/newnepal/jawafdehi-meta/services/nes/nes/core/models/person.py#13-19) or [ne](file:///Users/kwame/Documents/projects/newnepal/jawafdehi-meta/services/nes/nes/core/models/organization.py#23-27) (or both)
 4. `entity_subtype` — must be valid for the given `entity_type` per NES `ENTITY_TYPE_MAP`
-5. `author_id` — **required**, slug format (used to create/get NES [Author](file:///Users/kwame/Documents/projects/newnepal/newnepal-meta/services/nes/nes/core/models/version.py#14-28))
+5. `author_id` — **required**, slug format (used to create/get NES [Author](file:///Users/kwame/Documents/projects/newnepal/jawafdehi-meta/services/nes/nes/core/models/version.py#14-28))
 
 
 ### Example Payload
@@ -166,9 +166,9 @@ Patches an existing entity's attributes. This is a **merge update** — only the
 
 ### Validation Rules
 
-1. [entity_id](file:///Users/kwame/Documents/projects/newnepal/newnepal-meta/services/nes/nes/core/models/person.py#139-150) — **required**, must be a valid NES entity ID format (`entity:<type>/<slug>` or `entity:<type>/<subtype>/<slug>`)
+1. [entity_id](file:///Users/kwame/Documents/projects/newnepal/jawafdehi-meta/services/nes/nes/core/models/person.py#139-150) — **required**, must be a valid NES entity ID format (`entity:<type>/<slug>` or `entity:<type>/<subtype>/<slug>`)
 2. `updates` — **required**, non-empty object
-3. `updates` must NOT contain immutable fields: `slug`, [type](file:///Users/kwame/Documents/projects/newnepal/newnepal-meta/services/nes/nes/core/models/location.py#49-54), `sub_type`, `created_at`, `version_summary`, [id](file:///Users/kwame/Documents/projects/newnepal/newnepal-meta/services/nes/nes/core/models/version.py#47-51)
+3. `updates` must NOT contain immutable fields: `slug`, [type](file:///Users/kwame/Documents/projects/newnepal/jawafdehi-meta/services/nes/nes/core/models/location.py#49-54), `sub_type`, `created_at`, `version_summary`, [id](file:///Users/kwame/Documents/projects/newnepal/jawafdehi-meta/services/nes/nes/core/models/version.py#47-51)
 4. `author_id` — **required**, slug format
 
 
@@ -201,7 +201,7 @@ Patches an existing entity's attributes. This is a **merge update** — only the
 
 | Error | Cause |
 |-------|-------|
-| `Entity does not exist` | Invalid [entity_id](file:///Users/kwame/Documents/projects/newnepal/newnepal-meta/services/nes/nes/core/models/person.py#139-150) |
+| `Entity does not exist` | Invalid [entity_id](file:///Users/kwame/Documents/projects/newnepal/jawafdehi-meta/services/nes/nes/core/models/person.py#139-150) |
 | `Cannot modify immutable field: slug` | Attempted to change slug/type/sub_type |
 | Pydantic `ValidationError` | Updated data doesn't validate against entity model |
 
@@ -209,7 +209,7 @@ Patches an existing entity's attributes. This is a **merge update** — only the
 
 ## Action: `ADD_NAME`
 
-Adds a name (or misspelled name) to an existing entity. This is a convenience action that wraps an `UPDATE_ENTITY` specifically for the [names](file:///Users/kwame/Documents/projects/newnepal/newnepal-meta/services/nes/nes/core/models/entity.py#192-201) or `misspelled_names` list.
+Adds a name (or misspelled name) to an existing entity. This is a convenience action that wraps an `UPDATE_ENTITY` specifically for the [names](file:///Users/kwame/Documents/projects/newnepal/jawafdehi-meta/services/nes/nes/core/models/entity.py#192-201) or `misspelled_names` list.
 
 ### Payload Schema
 
@@ -228,10 +228,10 @@ Adds a name (or misspelled name) to an existing entity. This is a convenience ac
 
 ### Validation Rules
 
-1. [entity_id](file:///Users/kwame/Documents/projects/newnepal/newnepal-meta/services/nes/nes/core/models/person.py#139-150) — **required**, valid NES entity ID
-2. [name](file:///Users/kwame/Documents/projects/newnepal/newnepal-meta/services/nes/nes/core/models/entity.py#192-201) — **required**, must have at least [en](file:///Users/kwame/Documents/projects/newnepal/newnepal-meta/services/nes/nes/core/models/person.py#13-19) or [ne](file:///Users/kwame/Documents/projects/newnepal/newnepal-meta/services/nes/nes/core/models/organization.py#23-27), with a non-empty `full` field
-3. `name.kind` — **required**, valid [NameKind](file:///Users/kwame/Documents/projects/newnepal/newnepal-meta/services/nes/nes/core/models/base.py#34-42) value
-4. `is_misspelling` — optional boolean, defaults to `false`. If `true`, appends to `misspelled_names` instead of [names](file:///Users/kwame/Documents/projects/newnepal/newnepal-meta/services/nes/nes/core/models/entity.py#192-201)
+1. [entity_id](file:///Users/kwame/Documents/projects/newnepal/jawafdehi-meta/services/nes/nes/core/models/person.py#139-150) — **required**, valid NES entity ID
+2. [name](file:///Users/kwame/Documents/projects/newnepal/jawafdehi-meta/services/nes/nes/core/models/entity.py#192-201) — **required**, must have at least [en](file:///Users/kwame/Documents/projects/newnepal/jawafdehi-meta/services/nes/nes/core/models/person.py#13-19) or [ne](file:///Users/kwame/Documents/projects/newnepal/jawafdehi-meta/services/nes/nes/core/models/organization.py#23-27), with a non-empty `full` field
+3. `name.kind` — **required**, valid [NameKind](file:///Users/kwame/Documents/projects/newnepal/jawafdehi-meta/services/nes/nes/core/models/base.py#34-42) value
+4. `is_misspelling` — optional boolean, defaults to `false`. If `true`, appends to `misspelled_names` instead of [names](file:///Users/kwame/Documents/projects/newnepal/jawafdehi-meta/services/nes/nes/core/models/entity.py#192-201)
 5. `author_id` — **required**, slug format
 
 
@@ -239,7 +239,7 @@ Adds a name (or misspelled name) to an existing entity. This is a convenience ac
 
 1. Fetch existing entity via `PublicationService.get_entity(entity_id)`
 2. If `is_misspelling` is `true`: append to `misspelled_names` list
-3. If `is_misspelling` is `false`: append to [names](file:///Users/kwame/Documents/projects/newnepal/newnepal-meta/services/nes/nes/core/models/entity.py#192-201) list
+3. If `is_misspelling` is `false`: append to [names](file:///Users/kwame/Documents/projects/newnepal/jawafdehi-meta/services/nes/nes/core/models/entity.py#192-201) list
 4. Call `PublicationService.update_entity(entity, author_id, augmented_description)`
 5. Store entity ID and new name count in `result`
 
@@ -281,7 +281,7 @@ Adds a name (or misspelled name) to an existing entity. This is a convenience ac
 
 | Error | Cause |
 |-------|-------|
-| `Entity does not exist` | Invalid [entity_id](file:///Users/kwame/Documents/projects/newnepal/newnepal-meta/services/nes/nes/core/models/person.py#139-150) |
+| `Entity does not exist` | Invalid [entity_id](file:///Users/kwame/Documents/projects/newnepal/jawafdehi-meta/services/nes/nes/core/models/person.py#139-150) |
 | `Name must have at least one of en or ne` | Missing both language fields |
 | Pydantic `ValidationError` | Invalid name structure |
 
@@ -329,7 +329,7 @@ Adds a name (or misspelled name) to an existing entity. This is a convenience ac
 | 14 | `test_update_entity_missing_entity_id` | Rejected: no entity_id |
 | 15 | `test_update_entity_empty_updates` | Rejected: empty updates dict |
 | 16 | `test_update_entity_immutable_slug` | Rejected: updates contains `slug` |
-| 17 | `test_update_entity_immutable_type` | Rejected: updates contains [type](file:///Users/kwame/Documents/projects/newnepal/newnepal-meta/services/nes/nes/core/models/location.py#49-54) |
+| 17 | `test_update_entity_immutable_type` | Rejected: updates contains [type](file:///Users/kwame/Documents/projects/newnepal/jawafdehi-meta/services/nes/nes/core/models/location.py#49-54) |
 | 18 | `test_update_entity_immutable_version_summary` | Rejected: updates contains `version_summary` |
 | 19 | `test_update_entity_valid_tags_only` | Valid: updating only tags |
 | 20 | `test_update_entity_valid_description` | Valid: updating description |

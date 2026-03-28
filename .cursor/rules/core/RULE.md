@@ -1,7 +1,7 @@
-# Cursor Rules - NewNepal.org Meta-Repo
+# Cursor Rules - Jawafdehi.org Meta-Repo
 
 ## Context
-NewNepal.org civic tech ecosystem meta-repository with multiple services across three major platforms:
+Jawafdehi.org civic tech ecosystem meta-repository with multiple services across three major platforms:
 1. **Jawafdehi.org** - Open database of corruption and accountability
 2. **NES (Nepal Entity Service)** - Comprehensive database of Nepali public entities
 3. **NGM (Nepal Governance Modernization)** - Judicial data collection and governance analysis
@@ -12,7 +12,7 @@ See `AGENTS.md` for complete context.
 
 ### Service Navigation
 - **Work from meta-repo**: Always work from the meta-repo, cloning only needed services
-- **Clone missing services**: If needed, use `cd services && git clone git@github.com:NewNepal-org/<repo-name>.git <service-name>` (see README.md or AGENTS.md for mappings)
+- **Clone missing services**: If needed, use `cd services && git clone git@github.com:Jawafdehi/<repo-name>.git <service-name>` (see README.md or AGENTS.md for mappings)
 - Navigate to specific service directory before making changes
 - Each service has its own README.md with specific patterns
 - Use service-appropriate package managers (Poetry for Python, Bun for TypeScript)

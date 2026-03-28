@@ -1,6 +1,6 @@
 # NES Queue System
 
-Replace the NES migration-based update approach with a queue-based API in the Jawafdehi API. Contributors submit entity update requests via a single authenticated endpoint, admins/moderators approve via Django admin (or auto-approve), and a daily GitHub Actions cron processes approved items by calling the NES [PublicationService](file:///Users/kwame/Documents/projects/newnepal/newnepal-meta/services/nes/nes/services/publication/service.py#34-681) and pushing changes to `nes-db`.
+Replace the NES migration-based update approach with a queue-based API in the Jawafdehi API. Contributors submit entity update requests via a single authenticated endpoint, admins/moderators approve via Django admin (or auto-approve), and a daily GitHub Actions cron processes approved items by calling the NES [PublicationService](file:///Users/kwame/Documents/projects/newnepal/jawafdehi-meta/services/nes/nes/services/publication/service.py#34-681) and pushing changes to `nes-db`.
 
 ## Architecture
 
@@ -27,7 +27,7 @@ flowchart LR
 1. **Submit** — Authenticated user POSTs to `/api/submit_nes_change` with an action and payload
 2. **Auto-approve** — If the caller is Admin or Moderator, the item is immediately set to `APPROVED`
 3. **Manual review** — Otherwise, item stays `PENDING` until reviewed in Django admin
-4. **Process** — Daily GitHub Actions cron runs `process_queue`, which calls NES [PublicationService](file:///Users/kwame/Documents/projects/newnepal/newnepal-meta/services/nes/nes/services/publication/service.py#34-681) for each approved item
+4. **Process** — Daily GitHub Actions cron runs `process_queue`, which calls NES [PublicationService](file:///Users/kwame/Documents/projects/newnepal/jawafdehi-meta/services/nes/nes/services/publication/service.py#34-681) for each approved item
 5. **Commit** — After processing, changes are committed and pushed to the `nes-db` repository
 
 ## High-Level Component Changes
@@ -35,9 +35,9 @@ flowchart LR
 | Component | Change | Files |
 |-----------|--------|-------|
 | **New `nesq` app** | New Django app with models, serializer, API view, admin, processor | `nesq/` (7 new files) |
-| **Settings** | Register app, add token auth, add `NES_DB_PATH` env var | [config/settings.py](file:///Users/kwame/Documents/projects/newnepal/newnepal-meta/services/jawafdehi-api/config/settings.py) |
-| **URL routing** | Add queue endpoint | [config/urls.py](file:///Users/kwame/Documents/projects/newnepal/newnepal-meta/services/jawafdehi-api/config/urls.py) |
-| **Dependencies** | Add `djangorestframework` token auth (already included) | [pyproject.toml](file:///Users/kwame/Documents/projects/newnepal/newnepal-meta/services/nes/pyproject.toml) (no change needed) |
+| **Settings** | Register app, add token auth, add `NES_DB_PATH` env var | [config/settings.py](file:///Users/kwame/Documents/projects/newnepal/jawafdehi-meta/services/jawafdehi-api/config/settings.py) |
+| **URL routing** | Add queue endpoint | [config/urls.py](file:///Users/kwame/Documents/projects/newnepal/jawafdehi-meta/services/jawafdehi-api/config/urls.py) |
+| **Dependencies** | Add `djangorestframework` token auth (already included) | [pyproject.toml](file:///Users/kwame/Documents/projects/newnepal/jawafdehi-meta/services/nes/pyproject.toml) (no change needed) |
 | **GitHub Actions** | Daily cron workflow | `.github/workflows/process-nes-queue.yml` |
 | **Tests** | Comprehensive test suite for queue system | `tests/nesq/` |
 
@@ -49,7 +49,7 @@ flowchart LR
 
 ---
 
-#### [NEW] [models.py](file:///Users/kwame/Documents/projects/newnepal/newnepal-meta/services/jawafdehi-api/nesq/models.py)
+#### [NEW] [models.py](file:///Users/kwame/Documents/projects/newnepal/jawafdehi-meta/services/jawafdehi-api/nesq/models.py)
 
 **`QueueAction`** (TextChoices):
 - `CREATE_ENTITY` — Create a new NES entity
@@ -82,14 +82,14 @@ flowchart LR
 
 ---
 
-#### [NEW] [serializers.py](file:///Users/kwame/Documents/projects/newnepal/newnepal-meta/services/jawafdehi-api/nesq/serializers.py)
+#### [NEW] [serializers.py](file:///Users/kwame/Documents/projects/newnepal/jawafdehi-meta/services/jawafdehi-api/nesq/serializers.py)
 
 - **`NESQueueSubmitSerializer`** — Validates `action` and `payload`. Payload validation is action-specific.
 - **`NESQueueItemSerializer`** — Read serializer for the response after submission.
 
 ---
 
-#### [NEW] [api_views.py](file:///Users/kwame/Documents/projects/newnepal/newnepal-meta/services/jawafdehi-api/nesq/api_views.py)
+#### [NEW] [api_views.py](file:///Users/kwame/Documents/projects/newnepal/jawafdehi-meta/services/jawafdehi-api/nesq/api_views.py)
 
 Single endpoint:
 - `POST /api/submit_nes_change` — Submit a queue item (token auth required)
@@ -100,7 +100,7 @@ Uses DRF `TokenAuthentication` with `IsAuthenticated` permission.
 
 ---
 
-#### [NEW] [admin.py](file:///Users/kwame/Documents/projects/newnepal/newnepal-meta/services/jawafdehi-api/nesq/admin.py)
+#### [NEW] [admin.py](file:///Users/kwame/Documents/projects/newnepal/jawafdehi-meta/services/jawafdehi-api/nesq/admin.py)
 
 Register `NESQueueItem` in Django admin:
 - List display: action, status, submitted_by, reviewed_by, created_at
@@ -110,12 +110,12 @@ Register `NESQueueItem` in Django admin:
 
 ---
 
-#### [NEW] [processor.py](file:///Users/kwame/Documents/projects/newnepal/newnepal-meta/services/jawafdehi-api/nesq/processor.py)
+#### [NEW] [processor.py](file:///Users/kwame/Documents/projects/newnepal/jawafdehi-meta/services/jawafdehi-api/nesq/processor.py)
 
 **`QueueProcessor`** class:
 1. Query all `APPROVED` items ordered by `created_at`
 2. Build the final `change_description` by appending the submitter's username: `"{item.change_description} (submitted by {item.submitted_by.username})"`
-3. For each item, call the appropriate NES [PublicationService](file:///Users/kwame/Documents/projects/newnepal/newnepal-meta/services/nes/nes/services/publication/service.py#34-681) method with the augmented description:
+3. For each item, call the appropriate NES [PublicationService](file:///Users/kwame/Documents/projects/newnepal/jawafdehi-meta/services/nes/nes/services/publication/service.py#34-681) method with the augmented description:
    - `CREATE_ENTITY` → `publication.create_entity()`
    - `UPDATE_ENTITY` → `publication.update_entity()`
    - `ADD_NAME` → `publication.update_entity()` (appending to entity's names list)
@@ -124,11 +124,11 @@ Register `NESQueueItem` in Django admin:
 6. After all items: `git add`, `git commit`, `git push` on the `nes-db` repo
 
 > [!NOTE]
-> NES [PublicationService](file:///Users/kwame/Documents/projects/newnepal/newnepal-meta/services/nes/nes/services/publication/service.py#34-681) is async. The processor uses `asyncio.run()` to bridge Django's sync context.
+> NES [PublicationService](file:///Users/kwame/Documents/projects/newnepal/jawafdehi-meta/services/nes/nes/services/publication/service.py#34-681) is async. The processor uses `asyncio.run()` to bridge Django's sync context.
 
 ---
 
-#### [NEW] [management/commands/process_queue.py](file:///Users/kwame/Documents/projects/newnepal/newnepal-meta/services/jawafdehi-api/nesq/management/commands/process_queue.py)
+#### [NEW] [management/commands/process_queue.py](file:///Users/kwame/Documents/projects/newnepal/jawafdehi-meta/services/jawafdehi-api/nesq/management/commands/process_queue.py)
 
 Management command invoked by GitHub Actions:
 ```bash
@@ -137,7 +137,7 @@ poetry run python manage.py process_queue
 
 ---
 
-#### [NEW] [urls.py](file:///Users/kwame/Documents/projects/newnepal/newnepal-meta/services/jawafdehi-api/nesq/urls.py) / [apps.py](file:///Users/kwame/Documents/projects/newnepal/newnepal-meta/services/jawafdehi-api/nesq/apps.py)
+#### [NEW] [urls.py](file:///Users/kwame/Documents/projects/newnepal/jawafdehi-meta/services/jawafdehi-api/nesq/urls.py) / [apps.py](file:///Users/kwame/Documents/projects/newnepal/jawafdehi-meta/services/jawafdehi-api/nesq/apps.py)
 
 Standard app config and URL registration.
 
@@ -145,7 +145,7 @@ Standard app config and URL registration.
 
 ### Existing File Changes
 
-#### [MODIFY] [settings.py](file:///Users/kwame/Documents/projects/newnepal/newnepal-meta/services/jawafdehi-api/config/settings.py)
+#### [MODIFY] [settings.py](file:///Users/kwame/Documents/projects/newnepal/jawafdehi-meta/services/jawafdehi-api/config/settings.py)
 
 ```diff
  INSTALLED_APPS = [
@@ -159,7 +159,7 @@ Standard app config and URL registration.
 +NES_DB_PATH = os.getenv("NES_DB_PATH", str(BASE_DIR / "nes-db" / "v2"))
 ```
 
-#### [MODIFY] [urls.py](file:///Users/kwame/Documents/projects/newnepal/newnepal-meta/services/jawafdehi-api/config/urls.py)
+#### [MODIFY] [urls.py](file:///Users/kwame/Documents/projects/newnepal/jawafdehi-meta/services/jawafdehi-api/config/urls.py)
 
 ```diff
  urlpatterns = [
@@ -173,7 +173,7 @@ Standard app config and URL registration.
 
 ### GitHub Actions
 
-#### [NEW] [process-nes-queue.yml](file:///Users/kwame/Documents/projects/newnepal/newnepal-meta/services/jawafdehi-api/.github/workflows/process-nes-queue.yml)
+#### [NEW] [process-nes-queue.yml](file:///Users/kwame/Documents/projects/newnepal/jawafdehi-meta/services/jawafdehi-api/.github/workflows/process-nes-queue.yml)
 
 Daily cron workflow:
 - Trigger: `schedule: cron: '0 0 * * *'` (midnight UTC daily)

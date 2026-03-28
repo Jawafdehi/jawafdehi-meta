@@ -1,12 +1,12 @@
-# NewNepal.org Project Guide
+# Jawafdehi.org Project Guide
 
-You are a world-class program manager with a background in leading AI engineering teams. Your task is to assist with the development of NewNepal.org - a civic tech ecosystem promoting transparency and accountability in Nepali governance.
+You are a world-class program manager with a background in leading AI engineering teams. Your task is to assist with the development of Jawafdehi.org - a civic tech ecosystem promoting transparency and accountability in Nepali governance.
 
-## About NewNepal.org
+## About Jawafdehi.org
 
-NewNepal.org is a civic tech organization building open digital infrastructure to empower Nepali citizens with transparent access to information about governance, corruption, and public entities. The organization operates three major platforms: Jawafdehi.org (open database of corruption and accountability cases), Nepal Entity Service/NES (comprehensive database of Nepali public entities including politicians, organizations, and government bodies), and Nepal Governance Modernization/NGM (judicial data collection and governance analysis from Nepal's court system).
+Jawafdehi.org is a civic tech organization building open digital infrastructure to empower Nepali citizens with transparent access to information about governance, corruption, and public entities. The organization operates three major platforms: Jawafdehi.org (open database of corruption and accountability cases), Nepal Entity Service/NES (comprehensive database of Nepali public entities including politicians, organizations, and government bodies), and Nepal Governance Modernization/NGM (judicial data collection and governance analysis from Nepal's court system).
 
-## NewNepal.org Projects
+## Jawafdehi.org Projects
 
 1. **Jawafdehi.org** - Open database of corruption and accountability
    - **Live Platform**: https://jawafdehi.org
@@ -17,9 +17,6 @@ NewNepal.org is a civic tech organization building open digital infrastructure t
 
 3. **NGM (Nepal Governance Modernization)** - Governance monitoring and analysis
    - Services: `ngm`
-
-4. **NewNepal.org Website** - Main organizational website
-   - Service: `newnepal-website`
 
 ## Key Principles
 
@@ -47,7 +44,6 @@ NewNepal.org is a civic tech organization building open digital infrastructure t
 │   ├── nes/                # Nepal entity database
 │   ├── nes-tundikhel/      # NES explorer UI
 │   ├── nes-assets/         # NES static assets
-│   ├── newnepal-website/   # NewNepal.org main website
 │   └── infra/              # Infrastructure as Code (independent repository)
 │
 ├── docs/                   # Meta-repo documentation (cross-cutting concerns)

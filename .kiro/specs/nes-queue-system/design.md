@@ -1490,7 +1490,7 @@ def submit_nes_change(request):
 - Integration: Async calls via `asyncio.run()`
 
 **nes-db Repository**:
-- Repository: `https://github.com/NewNepal-org/NepalEntityService.git`
+- Repository: `https://github.com/Jawafdehi/NepalEntityService.git`
 - Branch: `main`
 - Path: `nes-db/v2/` (FileDatabase storage)
 - Access: Read/write via NES PublicationService, git operations for commit/push

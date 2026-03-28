@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Likhit (लिखित, meaning "written" or "documented") is a document conversion system that transforms Nepali official documents—PDFs and DOCX files—into structured, machine-readable formats (Markdown and JSON). The system serves the NewNepal.org ecosystem by making content from CIAA press releases, Kanun Patrika issues, court rulings, and similar publications accessible for downstream platforms like Jawafdehi and NGM.
+Likhit (लिखित, meaning "written" or "documented") is a document conversion system that transforms Nepali official documents—PDFs and DOCX files—into structured, machine-readable formats (Markdown and JSON). The system serves the Jawafdehi.org ecosystem by making content from CIAA press releases, Kanun Patrika issues, court rulings, and similar publications accessible for downstream platforms like Jawafdehi and NGM.
 
 The system consists of three independent services: a standalone Python library with CLI (Likhit), a Django REST API integration (JawafdehiAPI), and a React/TypeScript web frontend (Likhit-frontend). This requirements document captures the functional and non-functional requirements for the CLI nd the core likhit library.
 

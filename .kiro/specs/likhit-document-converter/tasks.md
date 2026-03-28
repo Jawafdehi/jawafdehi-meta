@@ -11,7 +11,7 @@ This implementation plan focuses on building the core Likhit library and CLI too
 ## Tasks
 
 - [ ] 1. Set up Likhit Library project structure
-  - [x] 1.1 Create new repository `github.com/NewNepal-org/likhit`
+  - [x] 1.1 Create new repository `github.com/Jawafdehi/likhit`
   - [ ] 1.2 Initialize Poetry project with Python 3.12+
   - [ ] 1.3 Set up directory structure: `likhit/`, `tests/`, `samples/`, `docs/`
   - [ ] 1.4 Configure pyproject.toml with core dependencies (pymupdf, pyyaml)

@@ -1,12 +1,12 @@
 # Contributor Workflows
 
-This document explains the different workflows for contributing to NewNepal.org based on your role.
+This document explains the different workflows for contributing to Jawafdehi.org based on your role.
 
 ## Two Types of Contributors
 
 ### Team Members (Use Meta Repo)
 
-**Who**: NewNepal.org team members, interns, core contributors
+**Who**: Jawafdehi.org team members, interns, core contributors
 
 **Why use the meta repo**:
 - Access to complete project context across all services (Jawafdehi, NES, NGM)
@@ -37,8 +37,8 @@ This document explains the different workflows for contributing to NewNepal.org 
 
 1. **Clone the meta repository**
    ```bash
-   git clone git@github.com:NewNepal-org/newnepal-meta.git
-   cd newnepal-meta
+   git clone git@github.com:Jawafdehi/jawafdehi-meta.git
+   cd jawafdehi-meta
    ```
 
 2. **Clone services you need**
@@ -46,13 +46,13 @@ This document explains the different workflows for contributing to NewNepal.org 
    cd services
    
    # Example: Full-stack developer working on Jawafdehi
-   git clone git@github.com:NewNepal-org/JawafdehiAPI.git jawafdehi-api
-   git clone git@github.com:NewNepal-org/Jawafdehi.git jawafdehi-frontend
-   git clone git@github.com:NewNepal-org/NepalEntityService.git nes
+   git clone git@github.com:Jawafdehi/JawafdehiAPI.git jawafdehi-api
+   git clone git@github.com:Jawafdehi/Jawafdehi.git jawafdehi-frontend
+   git clone git@github.com:Jawafdehi/NepalEntityService.git nes
    
    # Example: Working on NGM
-   git clone git@github.com:NewNepal-org/ngm.git ngm
-   git clone git@github.com:NewNepal-org/NepalEntityService.git nes
+   git clone git@github.com:Jawafdehi/ngm.git ngm
+   git clone git@github.com:Jawafdehi/NepalEntityService.git nes
    
    cd ..
    ```
@@ -117,7 +117,7 @@ done
 
 ### First-Time Setup
 
-1. **Choose a service** - We recommend [NES](https://github.com/NewNepal-org/nes) for first contributions
+1. **Choose a service** - We recommend [NES](https://github.com/Jawafdehi/nes) for first contributions
 
 2. **Fork the repository** - Click "Fork" on GitHub
 
@@ -129,7 +129,7 @@ done
 
 4. **Add upstream remote**
    ```bash
-   git remote add upstream https://github.com/NewNepal-org/nes.git
+   git remote add upstream https://github.com/Jawafdehi/nes.git
    ```
 
 5. **Set up the service** - Follow the README in the service

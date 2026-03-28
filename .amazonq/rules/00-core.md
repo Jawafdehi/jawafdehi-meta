@@ -1,14 +1,14 @@
-# Amazon Q Rules - NewNepal.org Meta-Repo
+# Amazon Q Rules - Jawafdehi.org Meta-Repo
 
-## About NewNepal.org
-NewNepal.org is a civic tech organization building open digital infrastructure for transparency and accountability in Nepal. Three major platforms:
+## About Jawafdehi.org
+Jawafdehi.org is a civic tech organization building open digital infrastructure for transparency and accountability in Nepal. Three major platforms:
 1. **Jawafdehi.org** - Open database of corruption and accountability
 2. **NES (Nepal Entity Service)** - Comprehensive database of Nepali public entities
 3. **NGM (Nepal Governance Modernization)** - Judicial data collection and governance analysis
 
 ## Meta-Repo Architecture
 - **Work from meta-repo**: Always work from the meta-repo, cloning only needed services
-- **Clone missing services**: `cd services && git clone git@github.com:NewNepal-org/<repo-name>.git <service-name>` (see README.md or AGENTS.md for mappings)
+- **Clone missing services**: `cd services && git clone git@github.com:Jawafdehi/<repo-name>.git <service-name>` (see README.md or AGENTS.md for mappings)
 - Navigate to specific service directory before making changes
 - Consider cross-service impact for API or schema changes (Jawafdehi, NES, NGM)
 - Use shared infrastructure patterns in `services/infra/` (independent repository)
