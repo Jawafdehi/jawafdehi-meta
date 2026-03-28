@@ -41,12 +41,6 @@
     }
   },
   "secrets": {
-    "NGM_DATABASE_URL": {
-      "description": "NGM judicial database URL."
-    },
-    "JAWAFDEHI_API_BASE_URL": {
-      "description": "Jawafdehi API Base URL."
-    },
     "JAWAFDEHI_API_TOKEN": {
       "description": "Jawafdehi API authentication token."
     }

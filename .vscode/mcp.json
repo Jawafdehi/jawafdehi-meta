@@ -14,12 +14,11 @@
     "jawafdehi": {
       "command": "uvx",
       "args": [
-        // "--from",
-        // "git+https://github.com/NewNepal-org/jawafdehi-mcp.git",
+        "--from",
+        "git+https://github.com/NewNepal-org/jawafdehi-mcp.git",
         "jawafdehi-mcp"
       ],
       "env": {
-        "NGM_DATABASE_URL": "${env:NGM_DATABASE_URL}",
         "JAWAFDEHI_API_TOKEN": "${env:JAWAFDEHI_API_TOKEN}"
       },
     }
