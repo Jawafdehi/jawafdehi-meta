@@ -37,6 +37,11 @@ Valid options are:
 2. We use the `get_jawafdehi_case` to get current state and `patch_jawafdehi_case` to update using JSON patch.
 3. Note that the `description` field supports HTML using TinyMCE.
 
+#### Source Description Policy
+When working with evidence sources, apply these description requirements based on evidence category:
+- **Primary evidence** (CIAA charge sheets, court documents, official reports): Description is REQUIRED. Include document type and date (e.g., "CIAA Charge Sheet — Case 081-CR-0080", "Special Court Verdict — Dated Falgun 13, 2082").
+- **Informative, news, and legal sources**: The source title/URL itself is often sufficient. If adding description, keep it minimal (publication name and date are enough), unless it provides important context.
+
 ### Downloading the sources locally.
 We should download sources to casework folder when needed. Sources should be downloaded to casework folder/sources/raw, and their markdowns to casework folder/sources/markdown. We use `convert_to_markdown` tool to extract Markdown.
 
@@ -51,7 +56,9 @@ To perform a case review, we must've downloaded the sources locally and converte
 
 Using the knowledge base and the case snapshot, as well as your knowledge of the case, let's create a file called review-<CIAA-case-number>-<date>.md.
 
-The suggestions need to be categorized on severity. Higher severities appear on top.
+Before concluding that fields are missing from the description, always extract and search the complete HTML description field using command-line tools (jq, grep) or text search to verify its absence, as HTML content in JSON is difficult to read visually and may contain the content in a different format or wording than expected. It is going to be Nepali so you will have do use due dilligence.
+
+The suggestions need to be categorized on severity (Critical, High, Medium, Low, Informative, etc.). Higher severities appear on top.
 
 ## Default Output Format
 
