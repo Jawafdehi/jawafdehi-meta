@@ -24,7 +24,9 @@
         "javascript.autoClosingTags": false,
 		    "python.testing.pytestEnabled": true,
         "window.confirmBeforeClose": true,
-        "chat.mcp.autostart": "onlyNew"
+        "chat.mcp.autostart": "onlyNew",
+        "telemetry.feedback.enabled": false,
+        "telemetry.editStats.enabled": false
       }
     }
   },
