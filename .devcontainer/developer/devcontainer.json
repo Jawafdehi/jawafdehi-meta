@@ -10,7 +10,7 @@
         "Jawafdehi/*": {
           "permissions": {
             "contents": "write",
-            "pull_request": "write",
+            "pull_requests": "write",
             "issues": "write"
           }
         }
