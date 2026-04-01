@@ -9,6 +9,8 @@ description: Review an already-published Jawafdehi case against the cited CIAA c
 
 This skill is separate from and complementary to the `/jawafdehi-caseworker` skill. Use it when a Jawafdehi case is already published on Jawafdehi.org and a reviewer needs to validate whether the published case is accurate, complete, and well-supported.
 
+Do not use this skill for pre-submission local draft checks. For local `case-draft.md` review before upload, use `tools/caseworker-agent/instructions/DRAFT-REVIEW.md`.
+
 This skill assumes the `/jawafdehi-caseworker` skill has already been run for the case being reviewed. The local sources folder (`casework/ciaa-fy-{yy}-{yy}/{case-number}/sources/`) must exist before review can proceed. If it does not exist, stop and ask the user to run the `/jawafdehi-caseworker` skill first to set up the case folder and download source materials.
 
 The reviewer works from two required inputs:
@@ -17,6 +19,8 @@ The reviewer works from two required inputs:
 2. The CIAA case number, for example `081-CR-0098`
 
 If either input is missing, ask for it before doing substantive work.
+
+The case URL must map to a Jawafdehi case currently in `IN_REVIEW` or `PUBLISHED` state.
 
 ## Primary Objective
 
