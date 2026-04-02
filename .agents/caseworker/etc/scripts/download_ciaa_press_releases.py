@@ -3,7 +3,7 @@ import csv
 import os
 
 INDEX_URL = "https://ngm-store.jawafdehi.org/indices/2026-03-31/index.ciaa-press-releases.json"
-OUTPUT_DIR = "tools/caseworker-agent/data"
+OUTPUT_DIR = ".agents/caseworker/data"
 OUTPUT_FILE = os.path.join(OUTPUT_DIR, "ciaa-press-releases.csv")
 
 FIELDS = ["press_id", "publication_date", "title", "source_url"]

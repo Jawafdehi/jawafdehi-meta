@@ -61,13 +61,13 @@ def main():
         (case_dir / "sources" / "markdown").mkdir(parents=True, exist_ok=True)
 
         # 5. Copy internal files and link instructions
-        prd_src = Path("tools/caseworker-agent/prd.json")
+        prd_src = Path(".agents/caseworker/etc/prd-template.json")
         if prd_src.exists():
             shutil.copy(prd_src, case_dir / "prd.json")
         else:
             print(f"Warning: {prd_src} not found.", file=sys.stderr)
 
-        instructions_src = Path("tools/caseworker-agent/instructions").resolve()
+        instructions_src = Path(".agents/caseworker/instructions").resolve()
         instructions_dest = case_dir.resolve() / "instructions"
         if instructions_dest.exists():
             if instructions_dest.is_symlink() or instructions_dest.is_file():
