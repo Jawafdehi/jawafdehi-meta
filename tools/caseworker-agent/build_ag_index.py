@@ -102,7 +102,12 @@ def fetch_charge_sheets_for_month(year: int, month: int) -> List[Dict]:
                 
                 # Extract PDF download URL
                 pdf_link = div.find('a', href=True)
-                pdf_url = f"https://ag.gov.np{pdf_link['href']}" if pdf_link else None
+                if pdf_link:
+                    href = pdf_link['href']
+                    # Handle both absolute and relative URLs
+                    pdf_url = href if href.startswith('http') else f"https://ag.gov.np{href}"
+                else:
+                    pdf_url = None
                 
                 charge_sheets.append({
                     'case_number': case_number,
@@ -120,10 +125,10 @@ def fetch_charge_sheets_for_month(year: int, month: int) -> List[Dict]:
         
     except requests.exceptions.RequestException as e:
         logger.error(f"  Failed to fetch month {month_id} (year {year}, month {month}): {e}")
-        return []
+        raise RuntimeError(f"Network error fetching month {month_id}: {e}") from e
     except Exception as e:
         logger.error(f"  Unexpected error fetching month {month_id}: {e}")
-        return []
+        raise RuntimeError(f"Unexpected error fetching month {month_id}: {e}") from e
 
 
 def main() -> None:
@@ -174,11 +179,17 @@ def main() -> None:
             if sheets:
                 logger.info(f"  Month {month:2d}: {len(sheets)} charge sheets")
                 for sheet in sheets:
-                    # Keep first occurrence only (deduplication)
+                    # Prefer more complete records (with pdf_url) over incomplete ones
                     if sheet['case_number'] not in all_sheets:
                         all_sheets[sheet['case_number']] = sheet
                     else:
-                        logger.debug(f"  Skipping duplicate: {sheet['case_number']}")
+                        existing = all_sheets[sheet['case_number']]
+                        # Replace if new record has pdf_url and existing doesn't
+                        if sheet.get('pdf_url') and not existing.get('pdf_url'):
+                            logger.debug(f"  Replacing incomplete record for {sheet['case_number']}")
+                            all_sheets[sheet['case_number']] = sheet
+                        else:
+                            logger.debug(f"  Skipping duplicate: {sheet['case_number']}")
             
             # Add delay between requests to avoid overwhelming the server
             time.sleep(0.5)

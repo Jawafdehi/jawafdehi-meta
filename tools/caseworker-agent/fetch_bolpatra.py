@@ -10,7 +10,6 @@ import re
 import os
 import sys
 from bs4 import BeautifulSoup
-from urllib.parse import urlencode, quote
 import time
 import urllib3
 
@@ -123,9 +122,10 @@ class BolpatraFetcher:
                 match = re.search(r"getTenderDetails\('(\d+)'\)", onclick)
                 if match:
                     tender_id = match.group(1)
+                    ifb_text = cells[1].get_text(strip=True).split('\n')[0].strip()
                     result = {
                         'tender_id': tender_id,
-                        'ifb_number': cells[1].get_text(strip=True).split('\n')[0],
+                        'ifb_number': ifb_text or 'Unknown',
                         'project_title': link.get_text(strip=True),
                         'public_entity': cells[3].get_text(strip=True),
                         'procurement_type': cells[4].get_text(strip=True),
@@ -195,7 +195,7 @@ class BolpatraFetcher:
                         'publication_date': pub_date,
                         'alf_id': alf_id,
                         'doc_id': doc_id,
-                        'download_url': f"{self.BASE_URL}/{href}"
+                        'download_url': f"{self.BASE_URL}/{href.lstrip('/')}"
                     })
                     print(f"  Found document: {doc_type} ({pub_date})")
         
@@ -265,7 +265,7 @@ class BolpatraFetcher:
             return results
         except Exception as e:
             print(f"Unexpected error searching for tender: {e}")
-            results['failed'].append({'stage': 'search', 'error': f"Unexpected: {str(e)}"})
+            results['failed'].append({'stage': 'search', 'error': f"Unexpected: {e!s}"})
             raise
         
         if not search_results:
@@ -293,7 +293,7 @@ class BolpatraFetcher:
                 results['failed'].append({
                     'stage': 'details',
                     'tender_id': tender_id,
-                    'error': f"Unexpected: {str(e)}"
+                    'error': f"Unexpected: {e!s}"
                 })
                 raise
             
@@ -341,15 +341,15 @@ def main():
         for failure in results['failed']:
             print(f"  ✗ {failure}")
     
-    # Exit with error code if any operations failed
-    if results['failed']:
-        print(f"\n{len(results['failed'])} operation(s) failed")
-        sys.exit(1)
-    elif not results['downloaded']:
+    # Exit with error code only if nothing was downloaded
+    if not results['downloaded']:
         print("\nNo files downloaded")
         sys.exit(1)
     else:
-        print(f"\n✓ Successfully downloaded {len(results['downloaded'])} file(s)")
+        if results['failed']:
+            print(f"\nDownloaded {len(results['downloaded'])} file(s), but {len(results['failed'])} operation(s) failed", file=sys.stderr)
+        else:
+            print(f"\nSuccessfully downloaded {len(results['downloaded'])} file(s)")
         sys.exit(0)
 
 
