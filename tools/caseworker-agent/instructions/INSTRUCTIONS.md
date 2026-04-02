@@ -89,6 +89,8 @@ Read through the CIAA press release and charge sheet to find procurement contrac
 
 These numbers typically appear in sections describing the procurement contract or project details.
 
+**Note:** In many procurement-related cases, the Contract No listed in the charge sheet is identical to the IFB number (e.g., case 081-CR-0082 had "Contract No: Re-PPHL2/G/NCB/02/2079-80" which was also the IFB). Use your judgment to determine whether the Contract No is suitable to pass to fetch_bolpatra.py; if it returns no results, try variations or note it as unavailable.
+
 **IMPORTANT - Handle Typos and Formatting Errors:**
 
 IFB numbers in press releases or charge sheets may contain typos or formatting errors. For example:

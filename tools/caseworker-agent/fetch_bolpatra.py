@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 Fetch bolpatra (procurement documents) from bolpatra.gov.np
 
@@ -15,13 +14,20 @@ from urllib.parse import urlencode, quote
 import time
 import urllib3
 
-# Disable SSL warnings
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+# Request timeout in seconds (connect, read)
+DEFAULT_TIMEOUT = (10, 60)
+
+# SSL verification is disabled by default for bolpatra.gov.np due to certificate issues
+# Set ENFORCE_SSL_VERIFICATION=1 to enable strict certificate validation
+ENFORCE_SSL_VERIFICATION = os.environ.get('ENFORCE_SSL_VERIFICATION', '').lower() in ('1', 'true', 'yes')
+
+if not ENFORCE_SSL_VERIFICATION:
+    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 class BolpatraFetcher:
     BASE_URL = "https://www.bolpatra.gov.np/egp"
     
-    def __init__(self, output_dir="data/bolpatra"):
+    def __init__(self, output_dir=None):
         self.session = requests.Session()
         self.session.headers.update({
             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
@@ -30,9 +36,19 @@ class BolpatraFetcher:
             'Referer': f'{self.BASE_URL}/searchOpportunity',
             'X-Requested-With': 'XMLHttpRequest',
         })
-        self.session.verify = False  # Disable SSL verification for bolpatra.gov.np
+        
+        # Disable SSL verification by default due to bolpatra.gov.np certificate issues
+        # Can be overridden with ENFORCE_SSL_VERIFICATION=1 environment variable
+        if not ENFORCE_SSL_VERIFICATION:
+            self.session.verify = False
+        
+        # Default output directory relative to script location
+        if output_dir is None:
+            script_dir = os.path.dirname(os.path.abspath(__file__))
+            output_dir = os.path.join(script_dir, "data", "bolpatra")
+        
         self.output_dir = output_dir
-        os.makedirs(output_dir, exist_ok=True)
+        os.makedirs(self.output_dir, exist_ok=True)
     
     def search_by_ifb_number(self, ifb_number):
         """Search for tenders by IFB/RFP/EOI/PQ number"""
@@ -69,7 +85,7 @@ class BolpatraFetcher:
         }
         
         url = f"{self.BASE_URL}/SearchOpportunitiesResultHomePage"
-        response = self.session.get(url, params=params)
+        response = self.session.get(url, params=params, timeout=DEFAULT_TIMEOUT)
         response.raise_for_status()
         
         return self._parse_search_results(response.text)
@@ -127,7 +143,7 @@ class BolpatraFetcher:
             '_': str(int(time.time() * 1000))
         }
         
-        response = self.session.get(url, params=params)
+        response = self.session.get(url, params=params, timeout=DEFAULT_TIMEOUT)
         response.raise_for_status()
         
         return self._parse_tender_details(response.text, tender_id)
@@ -141,14 +157,16 @@ class BolpatraFetcher:
             'documents': []
         }
         
-        # Extract basic info
-        labels = soup.find_all('label')
-        for i, label in enumerate(labels):
-            text = label.get_text(strip=True)
-            if i == 0:
-                details['public_entity'] = text
-            elif 'IFB/RFP/EOI/PQ' in soup.find_all('td')[i*2].get_text():
-                details['ifb_number'] = text
+        # Extract basic info by finding rows with IFB/RFP/EOI/PQ label
+        rows = soup.find_all('tr')
+        for row in rows:
+            cells = row.find_all('td')
+            if len(cells) >= 2:
+                label_text = cells[0].get_text(strip=True)
+                if 'IFB/RFP/EOI/PQ' in label_text:
+                    details['ifb_number'] = cells[1].get_text(strip=True)
+                elif 'Public Entity' in label_text or 'Organization' in label_text:
+                    details['public_entity'] = cells[1].get_text(strip=True)
         
         # Find all download links
         download_links = soup.find_all('a', href=re.compile(r'download\?'))
@@ -184,26 +202,33 @@ class BolpatraFetcher:
         url = doc_info['download_url']
         doc_type = doc_info['type'].replace('/', '-').replace(' ', '_')
         pub_date = doc_info['publication_date'].replace('/', '-').replace(' ', '_').replace(':', '-')
+        doc_id = doc_info['doc_id']
         
-        # Create filename
+        # Create filename with unique identifiers to prevent overwrites
         safe_ifb = ifb_number.replace('/', '-')
-        filename = f"{safe_ifb}_{doc_type}_{pub_date}.pdf"
+        safe_tender_id = str(tender_id).replace('/', '-')
+        safe_doc_id = str(doc_id).replace('/', '-')
+        filename = f"{safe_ifb}_{safe_tender_id}_{safe_doc_id}_{doc_type}_{pub_date}.pdf"
         filepath = os.path.join(self.output_dir, filename)
         
         print(f"Downloading: {filename}")
         
         try:
-            response = self.session.get(url, stream=True)
+            response = self.session.get(url, stream=True, timeout=DEFAULT_TIMEOUT)
             response.raise_for_status()
-            
+        except requests.exceptions.RequestException as e:
+            print(f"  Error downloading from {url}: {e}")
+            return None
+        
+        try:
             with open(filepath, 'wb') as f:
                 for chunk in response.iter_content(chunk_size=8192):
                     f.write(chunk)
             
             print(f"  Saved to: {filepath}")
             return filepath
-        except Exception as e:
-            print(f"  Error downloading: {e}")
+        except OSError as e:
+            print(f"  File I/O error writing to {filepath}: {e}")
             return None
     
     def fetch_all_documents(self, ifb_number):
