@@ -268,7 +268,7 @@ class BolpatraFetcher:
         except Exception as e:
             print(f"Unexpected error searching for tender: {e}")
             results['failed'].append({'stage': 'search', 'error': f"Unexpected: {e!s}"})
-            raise
+            return results
         
         if not search_results:
             print("No tenders found")
@@ -297,7 +297,7 @@ class BolpatraFetcher:
                     'tender_id': tender_id,
                     'error': f"Unexpected: {e!s}"
                 })
-                raise
+                continue
             
             # Download all documents
             print(f"\nDownloading {len(details['documents'])} documents...")

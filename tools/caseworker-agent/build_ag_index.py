@@ -210,7 +210,7 @@ def main() -> None:
                 writer.writeheader()
                 
                 # Sort by case number for readability
-                for case_number, sheet in sorted(all_sheets.items()):
+                for sheet in sorted(all_sheets.values(), key=lambda x: x['case_number']):
                     writer.writerow(sheet)
             
             logger.info(f"✓ Saved CSV to {args.output}")
