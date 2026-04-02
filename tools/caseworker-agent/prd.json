@@ -25,7 +25,8 @@
       "acceptanceCriteria": [
         "sources/case_<case_number>_<date-time>.md file exists, and includes the case infomration, plaintiff/defendants, and hearings.",
         "CIAA Press release raw file (PDF or DOC or equivalent) is downloaded.",
-        "Attorney General's Office charge sheet raw file (PDF or DOC or equivalent) is downloaded."
+        "Attorney General's Office charge sheet raw file (PDF or DOC or equivalent) is downloaded.",
+        "Bolpatra (procurement documents) are downloaded if IFB/RFP numbers are found in press release or charge sheet."
       ],
       "priority": 2,
       "passes": false,
