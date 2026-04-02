@@ -73,14 +73,25 @@ Edit your agent's `mcp.json` (or the respective IDE settings file):
       ],
       "env": {
         "JAWAFDEHI_API_TOKEN": "<your-local-token>",
-        "JAWAFDEHI_API_URL": "http://127.0.0.1:8000/api"
+        "JAWAFDEHI_API_BASE_URL": "http://127.0.0.1:8000/api"
       }
     }
   }
 }
 ```
 
-> **Note:** By setting the `JAWAFDEHI_API_URL` to your localhost port `8000`, all MCP commands like "create case" or "patch case" will be routed safely to your local SQLite database instead of production.
+> **Note:** By setting `JAWAFDEHI_API_BASE_URL` to your localhost port `8000`, all MCP commands like "create case" or "patch case" will be routed safely to your local SQLite database instead of production.
+
+### Agent JSON files
+
+If running agents directly via `.agents/caseworker/agents/*.json`, also set the corresponding environment variables in your shell before invoking the agent runner:
+
+```bash
+export JAWAFDEHI_API_TOKEN=<your-local-token>
+export JAWAFDEHI_API_BASE_URL=http://127.0.0.1:8000/api
+```
+
+The agent JSON files use `${env:...}` references so these shell variables will be picked up automatically.
 
 ## 4. Work with the Agent!
 

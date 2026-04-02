@@ -23,7 +23,8 @@ def main():
     parser.add_argument("--overwrite", action="store_true", help="Overwrite the case folder if it already exists")
     parser.add_argument("--preserve", action="store_true", help="Preserve the case folder if it already exists")
     parser.add_argument("--max-iterations", type=int, default=15, help="Maximum number of loop iterations")
-    
+    parser.add_argument("--runner", choices=["copilot", "kiro"], default="copilot", help="CLI runner to use (default: copilot)")
+
     # Simple workaround to support bash-like positional mixed args if they passed manually
     args, unknown = parser.parse_known_args()
 
@@ -31,6 +32,7 @@ def main():
     overwrite = args.overwrite
     preserve = args.preserve
     max_iterations = args.max_iterations
+    runner = args.runner
 
     if not case_number:
         print("Error: A CIAA case number must be provided.", file=sys.stderr)
@@ -85,9 +87,28 @@ def main():
             timestamp = datetime.datetime.now().strftime("%a %b %d %H:%M:%S %Z %Y").strip()
             f.write(f"Case workflow started at {timestamp}\n")
 
-    print(f"Starting agentic workflow runner loop for case {case_number}...")
+    # 7. Locate runner binary
+    if runner == "copilot":
+        agent_bin = "/home/codespace/.local/bin/copilot"
+        if not os.path.isfile(agent_bin):
+            agent_bin = shutil.which("copilot")
+        if not agent_bin:
+            print("Error: 'copilot' not found. Install GitHub Copilot CLI first.", file=sys.stderr)
+            sys.exit(1)
+        # MCP config for Jawafdehi and fetch servers (relative to repo root)
+        mcp_config = Path(".agents/caseworker/etc/copilot-mcp-config.json")
+        if not mcp_config.exists():
+            print(f"Warning: MCP config not found at {mcp_config}", file=sys.stderr)
+    else:
+        agent_bin = shutil.which("kiro-cli")
+        if not agent_bin:
+            print("Error: 'kiro-cli' not found on PATH.", file=sys.stderr)
+            sys.exit(1)
+        mcp_config = None
 
-    # 7. Loop runner
+    print(f"Starting agentic workflow runner loop for case {case_number} (runner: {runner})...")
+
+    # 8. Loop runner
     retry_count = 0
     iteration_count = 0
     while iteration_count < max_iterations:
@@ -104,22 +125,31 @@ def main():
             except Exception as e:
                 print(f"Warning: Failed to read prd.json: {e}")
 
-        print(f"Invoking kiro-cli to process task (Iteration {iteration_count + 1}/{max_iterations})...")
+        print(f"Invoking {runner} CLI to process task (Iteration {iteration_count + 1}/{max_iterations})...")
 
         # Construct the command
-        cmd = [
-            "kiro-cli",
-            "chat",
-            "--agent",
-            "jawafdehi-caseworker",
-            "--no-interactive",
-            "--require-mcp-startup",
-            f"Follow {case_dir}/instructions/INSTRUCTIONS.md"
-        ]
+        if runner == "copilot":
+            cmd = [
+                agent_bin,
+                "--allow-all",
+                "--agent", "jawafdehi-caseworker",
+            ]
+            if mcp_config and mcp_config.exists():
+                cmd += ["--additional-mcp-config", f"@{mcp_config}"]
+            cmd += ["-p", f"Follow {case_dir}/instructions/INSTRUCTIONS.md"]
+        else:
+            cmd = [
+                agent_bin,
+                "chat",
+                "--agent", "jawafdehi-caseworker",
+                "--no-interactive",
+                "--require-mcp-startup",
+                f"Follow {case_dir}/instructions/INSTRUCTIONS.md",
+            ]
 
         # Run process
         try:
-            result = subprocess.run(cmd, env=os.environ)
+            result = subprocess.run(cmd)
             exit_code = result.returncode
         except KeyboardInterrupt:
             print("\nWorkflow interrupted by user.")
@@ -132,10 +162,10 @@ def main():
             
             retry_count += 1
             if retry_count > 3:
-                print(f"Kiro CLI failed {retry_count} times in a row. Maximum retries exceeded. Aborting.")
+                print(f"{runner} CLI failed {retry_count} times in a row. Maximum retries exceeded. Aborting.")
                 break
 
-            print(f"Kiro CLI exited with code {exit_code}. Retrying in 10 seconds (Attempt {retry_count}/3)...")
+            print(f"{runner} CLI exited with code {exit_code}. Retrying in 10 seconds (Attempt {retry_count}/3)...")
             time.sleep(10)
             continue
 

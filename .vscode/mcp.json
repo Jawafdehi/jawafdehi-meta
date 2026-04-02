@@ -1,9 +1,5 @@
 {
   "servers": {
-    "workspace-mcp": {
-      "url": "https://google-auth-internal.jawafdehi.org/mcp/",
-      "type": "http"
-    },
     "fetch": {
       "command": "uvx",
       "args": [
@@ -19,8 +15,9 @@
         "jawafdehi-mcp"
       ],
       "env": {
-        "JAWAFDEHI_API_TOKEN": "${env:JAWAFDEHI_API_TOKEN}"
-      },
+        "JAWAFDEHI_API_TOKEN": "${env:JAWAFDEHI_API_TOKEN}",
+        "JAWAFDEHI_API_BASE_URL": "${env:JAWAFDEHI_API_BASE_URL}"
+      }
     }
   }
 }

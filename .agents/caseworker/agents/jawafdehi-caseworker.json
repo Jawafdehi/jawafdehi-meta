@@ -18,7 +18,8 @@
         "jawafdehi-mcp"
       ],
       "env": {
-        "JAWAFDEHI_API_TOKEN": "${env:JAWAFDEHI_API_TOKEN}-manually mess up"
+        "JAWAFDEHI_API_TOKEN": "${env:JAWAFDEHI_API_TOKEN}",
+        "JAWAFDEHI_API_BASE_URL": "${env:JAWAFDEHI_API_BASE_URL}"
       }
     },
     "brave": {
