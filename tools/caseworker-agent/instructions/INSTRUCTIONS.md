@@ -59,6 +59,8 @@ Save it to sources/raw/charge-sheet-<case-number>.pdf
 
 The publication date is usually when CIAA publishes the press release; it's also the same date when the Special court case is registered.
 
+> NOTE: AG charge sheets are also available in `tools/caseworker-agent/data/ag_index.csv`. It might be easier to get the charge sheet PDF URL from this index.
+
 Once you identify the year and month, you can use a curl like this to download the charge sheet:
 
 curl 'https://ag.gov.np/abhiyogpatras?month_id=50&code=sgao&description=undefined'.
