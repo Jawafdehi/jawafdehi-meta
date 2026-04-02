@@ -18,11 +18,15 @@ import urllib3
 DEFAULT_TIMEOUT = (10, 60)
 
 # SSL verification is disabled by default for bolpatra.gov.np due to certificate issues
-# Set ENFORCE_SSL_VERIFICATION=1 to enable strict certificate validation
+# The government website has a misconfigured certificate chain that prevents downloads
+# Set ENFORCE_SSL_VERIFICATION=1 to enable strict certificate validation (will likely fail)
 ENFORCE_SSL_VERIFICATION = os.environ.get('ENFORCE_SSL_VERIFICATION', '').lower() in ('1', 'true', 'yes')
 
 if not ENFORCE_SSL_VERIFICATION:
     urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+    print("   WARNING: TLS certificate verification is disabled for bolpatra.gov.np")
+    print("   This is necessary due to the government website's SSL certificate issues.")
+    print("   Set ENFORCE_SSL_VERIFICATION=1 to enable (downloads will likely fail).\n")
 
 class BolpatraFetcher:
     BASE_URL = "https://www.bolpatra.gov.np/egp"
@@ -232,40 +236,70 @@ class BolpatraFetcher:
             return None
     
     def fetch_all_documents(self, ifb_number):
-        """Main method to search and download all documents for an IFB number"""
+        """Main method to search and download all documents for an IFB number
+        
+        Returns:
+            dict: {'downloaded': [filepaths], 'failed': [error_dicts]}
+        """
         print(f"\n{'='*60}")
         print(f"Fetching bolpatra documents for: {ifb_number}")
         print(f"{'='*60}\n")
         
+        results = {
+            'downloaded': [],
+            'failed': []
+        }
+        
         # Search for the tender
-        results = self.search_by_ifb_number(ifb_number)
+        try:
+            search_results = self.search_by_ifb_number(ifb_number)
+        except Exception as e:
+            print(f"Error searching for tender: {e}")
+            results['failed'].append({'stage': 'search', 'error': str(e)})
+            return results
         
-        if not results:
+        if not search_results:
             print("No tenders found")
-            return []
-        
-        all_downloaded = []
+            return results
         
         # Process each result
-        for result in results:
+        for result in search_results:
             tender_id = result['tender_id']
             print(f"\nProcessing tender ID: {tender_id}")
             
             # Get tender details
-            details = self.get_tender_details(tender_id)
+            try:
+                details = self.get_tender_details(tender_id)
+            except Exception as e:
+                print(f"Error fetching tender details: {e}")
+                results['failed'].append({
+                    'stage': 'details',
+                    'tender_id': tender_id,
+                    'error': str(e)
+                })
+                continue
             
             # Download all documents
             print(f"\nDownloading {len(details['documents'])} documents...")
             for doc in details['documents']:
                 filepath = self.download_document(doc, tender_id, result['ifb_number'])
                 if filepath:
-                    all_downloaded.append(filepath)
+                    results['downloaded'].append(filepath)
+                else:
+                    results['failed'].append({
+                        'stage': 'download',
+                        'tender_id': tender_id,
+                        'doc_type': doc.get('type', 'Unknown'),
+                        'url': doc.get('download_url', 'Unknown')
+                    })
         
         print(f"\n{'='*60}")
-        print(f"Downloaded {len(all_downloaded)} documents to: {self.output_dir}")
+        print(f"Downloaded {len(results['downloaded'])} documents to: {self.output_dir}")
+        if results['failed']:
+            print(f"Failed: {len(results['failed'])} operations")
         print(f"{'='*60}\n")
         
-        return all_downloaded
+        return results
 
 
 def main():
@@ -277,14 +311,28 @@ def main():
     ifb_number = sys.argv[1]
     
     fetcher = BolpatraFetcher()
-    downloaded_files = fetcher.fetch_all_documents(ifb_number)
+    results = fetcher.fetch_all_documents(ifb_number)
     
-    if downloaded_files:
+    if results['downloaded']:
         print("\nDownloaded files:")
-        for f in downloaded_files:
-            print(f"  - {f}")
-    else:
+        for f in results['downloaded']:
+            print(f"  ✓ {f}")
+    
+    if results['failed']:
+        print("\nFailed operations:")
+        for failure in results['failed']:
+            print(f"  ✗ {failure}")
+    
+    # Exit with error code if any operations failed
+    if results['failed']:
+        print(f"\n{len(results['failed'])} operation(s) failed")
+        sys.exit(1)
+    elif not results['downloaded']:
         print("\nNo files downloaded")
+        sys.exit(1)
+    else:
+        print(f"\n✓ Successfully downloaded {len(results['downloaded'])} file(s)")
+        sys.exit(0)
 
 
 if __name__ == "__main__":
