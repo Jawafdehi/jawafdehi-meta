@@ -14,6 +14,7 @@ import sys
 import time
 from pathlib import Path
 from typing import Dict, List
+from urllib.parse import urljoin
 
 import requests
 from bs4 import BeautifulSoup
@@ -103,9 +104,8 @@ def fetch_charge_sheets_for_month(year: int, month: int) -> List[Dict]:
                 # Extract PDF download URL
                 pdf_link = div.find('a', href=True)
                 if pdf_link:
-                    href = pdf_link['href']
-                    # Handle both absolute and relative URLs
-                    pdf_url = href if href.startswith('http') else f"https://ag.gov.np{href}"
+                    href = pdf_link['href'].strip()
+                    pdf_url = urljoin("https://ag.gov.np/", href)
                 else:
                     pdf_url = None
                 
@@ -117,9 +117,12 @@ def fetch_charge_sheets_for_month(year: int, month: int) -> List[Dict]:
                     'court_office': court_office
                 })
             
-            except Exception as e:
+            except (AttributeError, IndexError, TypeError, ValueError, KeyError) as e:
                 logger.warning(f"  Failed to parse charge sheet card: {e}")
                 continue
+            except Exception:
+                logger.exception("  Unexpected parser error while processing charge sheet card")
+                raise
         
         return charge_sheets
         

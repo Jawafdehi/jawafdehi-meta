@@ -204,14 +204,16 @@ class BolpatraFetcher:
     def download_document(self, doc_info, tender_id, ifb_number):
         """Download a single document"""
         url = doc_info['download_url']
-        doc_type = doc_info['type'].replace('/', '-').replace(' ', '_')
-        pub_date = doc_info['publication_date'].replace('/', '-').replace(' ', '_').replace(':', '-')
+        
+        # Sanitize filename components - replace any non-safe characters
+        doc_type = re.sub(r'[^A-Za-z0-9._-]+', '_', doc_info['type'])
+        pub_date = re.sub(r'[^A-Za-z0-9._-]+', '_', doc_info['publication_date'])
         doc_id = doc_info['doc_id']
         
         # Create filename with unique identifiers to prevent overwrites
-        safe_ifb = ifb_number.replace('/', '-')
-        safe_tender_id = str(tender_id).replace('/', '-')
-        safe_doc_id = str(doc_id).replace('/', '-')
+        safe_ifb = re.sub(r'[^A-Za-z0-9._-]+', '-', ifb_number)
+        safe_tender_id = re.sub(r'[^A-Za-z0-9._-]+', '-', str(tender_id))
+        safe_doc_id = re.sub(r'[^A-Za-z0-9._-]+', '-', str(doc_id))
         filename = f"{safe_ifb}_{safe_tender_id}_{safe_doc_id}_{doc_type}_{pub_date}.pdf"
         filepath = os.path.join(self.output_dir, filename)
         
@@ -341,15 +343,15 @@ def main():
         for failure in results['failed']:
             print(f"  ✗ {failure}")
     
-    # Exit with error code only if nothing was downloaded
+    # Exit with error code if nothing was downloaded or if any operations failed
     if not results['downloaded']:
         print("\nNo files downloaded")
         sys.exit(1)
+    elif results['failed']:
+        print(f"\nDownloaded {len(results['downloaded'])} file(s), but {len(results['failed'])} operation(s) failed", file=sys.stderr)
+        sys.exit(1)
     else:
-        if results['failed']:
-            print(f"\nDownloaded {len(results['downloaded'])} file(s), but {len(results['failed'])} operation(s) failed", file=sys.stderr)
-        else:
-            print(f"\nSuccessfully downloaded {len(results['downloaded'])} file(s)")
+        print(f"\nSuccessfully downloaded {len(results['downloaded'])} file(s)")
         sys.exit(0)
 
 

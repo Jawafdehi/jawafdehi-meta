@@ -155,5 +155,4 @@ def main():
     print("Workflow complete.")
 
 if __name__ == "__main__":
-    sys.argv.extend(["081-CR-0123", "--preserve"])
     main()
