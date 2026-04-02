@@ -24,9 +24,9 @@ ENFORCE_SSL_VERIFICATION = os.environ.get('ENFORCE_SSL_VERIFICATION', '').lower(
 
 if not ENFORCE_SSL_VERIFICATION:
     urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-    print("   WARNING: TLS certificate verification is disabled for bolpatra.gov.np")
-    print("   This is necessary due to the government website's SSL certificate issues.")
-    print("   Set ENFORCE_SSL_VERIFICATION=1 to enable (downloads will likely fail).\n")
+    print("   WARNING: TLS certificate verification is disabled for bolpatra.gov.np", file=sys.stderr)
+    print("   This is necessary due to the government website's SSL certificate issues.", file=sys.stderr)
+    print("   Set ENFORCE_SSL_VERIFICATION=1 to enable (downloads will likely fail).\n", file=sys.stderr)
 
 class BolpatraFetcher:
     BASE_URL = "https://www.bolpatra.gov.np/egp"
@@ -233,6 +233,12 @@ class BolpatraFetcher:
             return filepath
         except OSError as e:
             print(f"  File I/O error writing to {filepath}: {e}")
+            # Clean up partial file
+            try:
+                if os.path.exists(filepath):
+                    os.remove(filepath)
+            except OSError:
+                pass
             return None
     
     def fetch_all_documents(self, ifb_number):
@@ -253,10 +259,14 @@ class BolpatraFetcher:
         # Search for the tender
         try:
             search_results = self.search_by_ifb_number(ifb_number)
-        except Exception as e:
+        except (requests.exceptions.RequestException, ValueError) as e:
             print(f"Error searching for tender: {e}")
             results['failed'].append({'stage': 'search', 'error': str(e)})
             return results
+        except Exception as e:
+            print(f"Unexpected error searching for tender: {e}")
+            results['failed'].append({'stage': 'search', 'error': f"Unexpected: {str(e)}"})
+            raise
         
         if not search_results:
             print("No tenders found")
@@ -270,7 +280,7 @@ class BolpatraFetcher:
             # Get tender details
             try:
                 details = self.get_tender_details(tender_id)
-            except Exception as e:
+            except (requests.exceptions.RequestException, ValueError) as e:
                 print(f"Error fetching tender details: {e}")
                 results['failed'].append({
                     'stage': 'details',
@@ -278,6 +288,14 @@ class BolpatraFetcher:
                     'error': str(e)
                 })
                 continue
+            except Exception as e:
+                print(f"Unexpected error fetching tender details: {e}")
+                results['failed'].append({
+                    'stage': 'details',
+                    'tender_id': tender_id,
+                    'error': f"Unexpected: {str(e)}"
+                })
+                raise
             
             # Download all documents
             print(f"\nDownloading {len(details['documents'])} documents...")
