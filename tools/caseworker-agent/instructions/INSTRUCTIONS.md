@@ -159,11 +159,49 @@ Also, for checkpoint, after every 10 or so web searches, keep updating the searc
 ## US-005: Preparing the Case Draft Locally
 We'll create a markdown file called case-draft in the casework folder. It will follow the template added in `instructions/case-template.md` in the casework folder.
 
-Use the jawafdehi-caseworker skill to review this case draft. NOTE explicitly that we won't have a case in Jawafdehi.org, so we will have to make do with the local files that we have. The review should be saved in the usual location, naming it review-<CIAA-case-number>-<date-time>.md.
+Use `instructions/DRAFT-REVIEW.md` to review this local case draft. NOTE explicitly that we may not yet have a case in Jawafdehi.org, so the review must use local source files in `sources/markdown/`.
+
+Refinement loop requirements:
+1. Run draft review after creating `case-draft.md`.
+2. If result is `needs_revision` or `blocked`, apply required edits to `case-draft.md` and re-run review.
+3. Stop after either:
+	- a result of `approved` or `approved_with_minor_edits`, or
+	- 3 review iterations total.
+4. Save each review as `review-<CIAA-case-number>-<date-time>.md`.
+
+Only proceed to US-006 once draft quality is at least `approved_with_minor_edits`.
 
 ## US-006: Uploading the Case Draft to Jawafdehi
 
-TODO.
+1. Ensure you have either:
+	- an existing Jawafdehi case ID/URL from the user, or
+	- create a new DRAFT case via `create_jawafdehi_case` when no case exists.
+2. Convert `case-draft.md` into API patch operations and apply via `patch_jawafdehi_case`:
+	- title
+	- short_description (if present)
+	- description
+	- key_allegations
+	- timeline
+	- evidence
+	- tags
+	- case_start_date and case_end_date (if present)
+3. Resolve accused and related entities:
+	- Look up NES IDs when possible.
+	- Patch `alleged_entity_ids` and `related_entity_ids` on the case.
+4. Run pre-submit checks before state transition:
+	- title present
+	- description present
+	- at least one key allegation
+	- at least one accused entity
+5. Submit for review using JSON patch:
+	- `[{"op": "replace", "path": "/state", "value": "IN_REVIEW"}]`
+6. Record and report output artifacts:
+	- final Jawafdehi case URL
+	- updated case state
+	- summary of uploaded fields
+7. Mark completion in `prd.json`:
+	- set global `is_complete` to `true`
+	- set global `failed` to `false`
 
-For now, Update the PRD, Let's mark the workflow as a failure (set is_complete=true, and failed=true). Tell the user this isn't implemented yet.
+If any unrecoverable API validation or permission error occurs, set `is_complete=true` and `failed=true`, then log the blocking reason in `progress.log`.
 
