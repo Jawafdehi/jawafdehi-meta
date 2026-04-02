@@ -25,7 +25,10 @@
       "acceptanceCriteria": [
         "sources/case_<case_number>_<date-time>.md file exists, and includes the case infomration, plaintiff/defendants, and hearings.",
         "CIAA Press release raw file (PDF or DOC or equivalent) is downloaded.",
-        "Attorney General's Office charge sheet raw file (PDF or DOC or equivalent) is downloaded."
+        "CIAA Press release is converted to markdown in sources/markdown/ using convert_to_markdown tool.",
+        "Attorney General's Office charge sheet raw file (PDF or DOC or equivalent) is downloaded.",
+        "Attorney General's Office charge sheet is converted to markdown in sources/markdown/ using convert_to_markdown tool.",
+        "Bolpatra (procurement documents) are downloaded if IFB/RFP/EOI/PQ numbers are found in press release or charge sheet."
       ],
       "priority": 2,
       "passes": false,
@@ -37,7 +40,8 @@
       "description": "Fetch news items from Web search regarding the case.",
       "acceptanceCriteria": [
         "Web search executed",
-        "Relevant news items regarding the case are fetched"
+        "Relevant news items regarding the case are fetched",
+        "News articles are saved as markdown in sources/markdown/"
       ],
       "priority": 3,
       "passes": false,
@@ -45,10 +49,10 @@
     },
     {
       "id": "US-004",
-      "title": "Convert Documents to Markdown",
-      "description": "Convert all the sources to markdown files using the convert_to_markdown tool.",
+      "title": "Convert Remaining Documents to Markdown",
+      "description": "Convert any remaining raw files (like bolpatra PDFs) to markdown using the convert_to_markdown tool.",
       "acceptanceCriteria": [
-        "All raw files have been converted to markdown."
+        "All remaining raw files (bolpatra documents, etc.) have been converted to markdown."
       ],
       "priority": 4,
       "passes": false,

@@ -59,6 +59,8 @@ Save it to sources/raw/charge-sheet-<case-number>.pdf
 
 The publication date is usually when CIAA publishes the press release; it's also the same date when the Special court case is registered.
 
+> NOTE: AG charge sheets are also available in `tools/caseworker-agent/data/ag_index.csv`. It might be easier to get the charge sheet PDF URL from this index.
+
 Once you identify the year and month, you can use a curl like this to download the charge sheet:
 
 curl 'https://ag.gov.np/abhiyogpatras?month_id=50&code=sgao&description=undefined'.
@@ -69,6 +71,81 @@ The month ID is determined as follows:
 ...
 2079 Baisakh = 13
 ...
+
+### Bolpatra (Procurement Documents)
+
+Get the bolpatra (procurement documents) for the case if applicable.
+
+Bolpatra documents are procurement records from https://www.bolpatra.gov.np that may be referenced in the CIAA press release or charge sheet (abhiyog patra). These are only relevant for procurement-related corruption cases.
+
+#### Step 1: Find IFB/RFP/EOI/PQ Numbers
+
+Read through the CIAA press release and charge sheet to find procurement contract identifiers. Look for patterns like:
+
+- **IFB/RFP/EOI/PQ No:** followed by a number
+- **Contract No:** followed by a number
+- **Common formats:**
+  - `Re-PPHL2/G/NCB/02/2079-80`
+  - `NITC/G/NCB-7-2074/75`
+  - `ABC/DEF/123/2079-80`
+
+These numbers typically appear in sections describing the procurement contract or project details.
+
+**Note:** In many procurement-related cases, the Contract No listed in the charge sheet is identical to the IFB number (e.g., case 081-CR-0082 had "Contract No: Re-PPHL2/G/NCB/02/2079-80" which was also the IFB). Use your judgment to determine whether the Contract No is suitable to pass to fetch_bolpatra.py; if it returns no results, try variations or note it as unavailable.
+
+**IMPORTANT - Handle Typos and Formatting Errors:**
+
+IFB numbers in press releases or charge sheets may contain typos or formatting errors. For example:
+- Document shows: `NITC/G/NCB-7-074/75` (missing digit in year)
+- Correct format: `NITC/G/NCB-7-2074/75` (full 4-digit year)
+
+If your initial search returns no results, try variations:
+- Add missing digits to years (`074/75` → `2074/75`)
+- Try different separators (dashes vs slashes)
+- Check for transposed numbers or missing segments
+
+#### Step 2: Use fetch_bolpatra.py Script
+
+Once you have identified the IFB/RFP/EOI/PQ number, use the `fetch_bolpatra.py` script to automatically search and download all procurement documents:
+
+```bash
+python tools/caseworker-agent/fetch_bolpatra.py "IFB_NUMBER"
+```
+
+**Example:**
+```bash
+python tools/caseworker-agent/fetch_bolpatra.py "NITC/G/NCB-7-2074/75"
+```
+
+The script will:
+1. Search bolpatra.gov.np for the IFB number
+2. Extract tender IDs from search results
+3. Fetch detailed tender information
+4. Download all available documents (bid documents, addendums, LOI, etc.)
+5. Save files to `tools/caseworker-agent/data/bolpatra/` directory
+
+**After downloading**, move the files to your case folder:
+```bash
+mv tools/caseworker-agent/data/bolpatra/NITC-G-NCB-7-2074-75_*.pdf casework/<case_number>/sources/raw/
+```
+
+#### Step 3: Try Variations if No Results
+
+If the script returns "No tenders found", try these variations:
+- Add full 4-digit year: `NITC/G/NCB-7-2074/75` instead of `NITC/G/NCB-7-074/75`
+- Try with 2-digit year: `NITC/G/NCB-7-74/75`
+- Check for typos in the original document
+
+#### Step 4: If No Procurement Documents Are Available
+
+If:
+- No IFB/RFP/EOI/PQ number is found in the CIAA or charge sheet documents, or
+- The search returns no matching tender, or
+- The tender exists but no downloadable files are available,
+
+Then document this in the progress log and continue with the next user story. Not all corruption cases involve procurement.
+
+
 
 ## US-003: Fetching news items from Web search
 
