@@ -51,7 +51,7 @@ class BolpatraFetcher:
         self.output_dir = output_dir
         os.makedirs(self.output_dir, exist_ok=True)
     
-    def _retry_request(self, func, *args, max_attempts=3, **kwargs):
+    def _retry_request(self, func, *args, max_attempts=3, retryable_exceptions=(requests.exceptions.RequestException,), **kwargs):
         """
         Retry function with exponential backoff on transient failures.
         Retries timeouts and 5xx errors, but not 4xx or SSL errors.
@@ -63,7 +63,8 @@ class BolpatraFetcher:
                 return func(*args, **kwargs)
             
             except requests.exceptions.HTTPError as e:
-                status = e.response.status_code if e.response else None
+                # Use 'is not None' to avoid Response.__bool__ returning False for 4xx/5xx
+                status = e.response.status_code if e.response is not None else None
                 if status and status >= 500 and attempt < max_attempts - 1:
                     delay = backoff_delays[attempt]
                     print(f"  HTTP {status}, retrying in {delay}s...")
@@ -71,7 +72,7 @@ class BolpatraFetcher:
                     continue
                 raise
             
-            except requests.exceptions.RequestException as e:
+            except retryable_exceptions as e:
                 # Don't retry SSL errors (configuration issue)
                 if isinstance(e, requests.exceptions.SSLError):
                     raise
@@ -137,8 +138,13 @@ class BolpatraFetcher:
         
         table = soup.find('table', {'id': 'dashBoardBidResult'})
         if not table:
-            print("No results found")
-            return results
+            # Check for known empty-results marker
+            no_records = soup.find(text=re.compile(r'no\s+records?\s+found', re.IGNORECASE))
+            if no_records:
+                print("No results found")
+                return results
+            # If table is missing and no empty-results marker, this is a parse failure
+            raise ValueError("Search results table not found and no empty-results marker present - possible site change or error page")
         
         tbody = table.find('tbody')
         if not tbody:
@@ -287,8 +293,11 @@ class BolpatraFetcher:
                 return filepath
         
         try:
-            result_path = self._retry_request(_do_download)
-            print(f"{doc_type}")
+            result_path = self._retry_request(
+                _do_download,
+                retryable_exceptions=(requests.exceptions.RequestException, ValueError)
+            )
+            print(f"  ✓ {doc_type}")
             return result_path
         except (requests.exceptions.RequestException, ValueError) as e:
             print(f"  Error downloading from {url}: {e}")
