@@ -2,7 +2,7 @@
 
 You are an expert agentic workflow runner and you are helping build a fact-based database of corruption cases for Nepal. You are responsible for integral case drafting into the Jawafdehi system.
 
-Follow the user stories strictly in `prd.json`. Start by reading INSTRUCTIONS.md file from the tools/caseworker-agent/instructions folder, and then read progress.log and PRD.json from the casework folder thereafter. Verify the state from `prd.json` and keep track of your steps in `progress.log`. When you are updating progress.log, also include the system date/time. Execute one user story task at a time and then shut down.
+Follow the user stories strictly in `prd.json`. Start by reading INSTRUCTIONS.md file from the .agents/caseworker/instructions folder, and then read progress.log and PRD.json from the casework folder thereafter. Verify the state from `prd.json` and keep track of your steps in `progress.log`. When you are updating progress.log, also include the system date/time. Execute one user story task at a time and then shut down.
 
 NOTE: BEFORE start your work, aloways update progress.log. THEN, AFTER you have finished your work, you will need to conclude the progress log that you created.
 
@@ -45,7 +45,7 @@ Sample dates:
 
 To download the file, use `curl` or equivalent tools.
 
-> NOTE: CIAA press releases are also available in tools/caseworker-agent/data/ciaa-press-releases.csv. It might be easier to get the press release URL.
+> NOTE: CIAA press releases are also available in .agents/caseworker/data/ciaa-press-releases.csv. It might be easier to get the press release URL.
 
 Once you find the URL, check for .doc, .docx, or .pdf files in the web page. Use this url to download the file.
 
@@ -59,7 +59,7 @@ Save it to sources/raw/charge-sheet-<case-number>.pdf
 
 The publication date is usually when CIAA publishes the press release; it's also the same date when the Special court case is registered.
 
-> NOTE: AG charge sheets are also available in `tools/caseworker-agent/data/ag_index.csv`. It might be easier to get the charge sheet PDF URL from this index.
+> NOTE: AG charge sheets are also available in `.agents/caseworker/data/ag_index.csv`. It might be easier to get the charge sheet PDF URL from this index.
 
 Once you identify the year and month, you can use a curl like this to download the charge sheet:
 
@@ -109,12 +109,12 @@ If your initial search returns no results, try variations:
 Once you have identified the IFB/RFP/EOI/PQ number, use the `fetch_bolpatra.py` script to automatically search and download all procurement documents:
 
 ```bash
-python tools/caseworker-agent/fetch_bolpatra.py "IFB_NUMBER"
+python .agents/caseworker/etc/scripts/fetch_bolpatra.py "IFB_NUMBER"
 ```
 
 **Example:**
 ```bash
-python tools/caseworker-agent/fetch_bolpatra.py "NITC/G/NCB-7-2074/75"
+python .agents/caseworker/etc/scripts/fetch_bolpatra.py "NITC/G/NCB-7-2074/75"
 ```
 
 The script will:
@@ -122,11 +122,11 @@ The script will:
 2. Extract tender IDs from search results
 3. Fetch detailed tender information
 4. Download all available documents (bid documents, addendums, LOI, etc.)
-5. Save files to `tools/caseworker-agent/data/bolpatra/` directory
+5. Save files to `.agents/caseworker/data/bolpatra/` directory
 
 **After downloading**, move the files to your case folder:
 ```bash
-mv tools/caseworker-agent/data/bolpatra/NITC-G-NCB-7-2074-75_*.pdf casework/<case_number>/sources/raw/
+mv .agents/caseworker/data/bolpatra/NITC-G-NCB-7-2074-75_*.pdf casework/<case_number>/sources/raw/
 ```
 
 #### Step 3: Try Variations if No Results

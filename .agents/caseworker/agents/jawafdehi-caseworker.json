@@ -1,7 +1,7 @@
 {
-  "name": "jawafdehi-caseworker-verifier",
-  "description": "A specialized agent for verifying the work done by the CIAA caseworker.",
-  "prompt": null,
+  "name": "jawafdehi-caseworker",
+  "description": "A specialized agent for processing CIAA cases.",
+  "prompt": "You are an expert agentic workflow runner and you are helping build a fact-based database of corruption cases for Nepal. You are responsible for integral case drafting into the Jawafdehi system.",
   "mcpServers": {
     "fetch": {
       "command": "uvx",
@@ -18,7 +18,8 @@
         "jawafdehi-mcp"
       ],
       "env": {
-        "JAWAFDEHI_API_TOKEN": "${env:JAWAFDEHI_API_TOKEN}"
+        "JAWAFDEHI_API_TOKEN": "${env:JAWAFDEHI_API_TOKEN}",
+        "JAWAFDEHI_API_BASE_URL": "${env:JAWAFDEHI_API_BASE_URL}"
       }
     },
     "brave": {
@@ -33,19 +34,21 @@
   "tools": [
     "read",
     "write",
+    "shell",
     "@fetch",
     "@jawafdehi"
   ],
   "toolAliases": {},
   "allowedTools": [
     "@jawafdehi",
-    "@fetch"
+    "@fetch",
+    "shell"
   ],
   "resources": [
     "file://AGENTS.md",
     "file://.kiro/steering/**/*.md",
     "skill://.kiro/skills/**/SKILL.md",
-    "file://.tools/caseworker-agent/instructions/INSTRUCTIONS.md"
+    "file://.agents/caseworker/instructions/INSTRUCTIONS.md"
   ],
   "hooks": {},
   "toolsSettings": {
@@ -56,10 +59,16 @@
     },
     "read": {
       "allowedPaths": [
-        "./**"
+        "casework/**",
+        ".agents/caseworker/instructions/INSTRUCTIONS.md"
+      ]
+    },
+    "shell": {
+      "allowedCommands": [
+        "curl .*"
       ]
     }
   },
   "includeMcpJson": false,
-  "model": "claude-sonnet-4.5"
+  "model": "auto"
 }
