@@ -14,7 +14,7 @@ import time
 import urllib3
 
 # Request timeout in seconds (connect, read)
-DEFAULT_TIMEOUT = (10, 60)
+DEFAULT_TIMEOUT = (10, 30)
 
 # SSL verification is disabled by default for bolpatra.gov.np due to certificate issues
 # The government website has a misconfigured certificate chain that prevents downloads
@@ -33,9 +33,7 @@ class BolpatraFetcher:
     def __init__(self, output_dir=None):
         self.session = requests.Session()
         self.session.headers.update({
-            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
-            'Accept': '*/*',
-            'Accept-Language': 'en-US,en;q=0.9',
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
             'Referer': f'{self.BASE_URL}/searchOpportunity',
             'X-Requested-With': 'XMLHttpRequest',
         })
@@ -52,6 +50,48 @@ class BolpatraFetcher:
         
         self.output_dir = output_dir
         os.makedirs(self.output_dir, exist_ok=True)
+    
+    def _retry_request(self, func, *args, max_attempts=3, retryable_exceptions=(requests.exceptions.RequestException,), **kwargs):
+        """
+        Retry function with exponential backoff on transient failures.
+        Retries timeouts and 5xx errors, but not 4xx or SSL errors.
+        """
+        backoff_delays = [1, 2, 4]
+        
+        for attempt in range(max_attempts):
+            try:
+                return func(*args, **kwargs)
+            
+            except requests.exceptions.HTTPError as e:
+                # Use 'is not None' to avoid Response.__bool__ returning False for 4xx/5xx
+                status = e.response.status_code if e.response is not None else None
+                if status and status >= 500 and attempt < max_attempts - 1:
+                    delay = backoff_delays[attempt]
+                    print(f"  HTTP {status}, retrying in {delay}s...")
+                    time.sleep(delay)
+                    continue
+                raise
+            
+            except retryable_exceptions as e:
+                # Don't retry SSL errors (configuration issue)
+                if isinstance(e, requests.exceptions.SSLError):
+                    raise
+                
+                # Retry other transient errors
+                if attempt < max_attempts - 1:
+                    delay = backoff_delays[attempt]
+                    print(f"  {type(e).__name__}, retrying in {delay}s...")
+                    time.sleep(delay)
+                    continue
+                raise
+    
+    def _get_text(self, url, **kwargs):
+        """GET URL and return text with automatic retry logic"""
+        def _request():
+            response = self.session.get(url, timeout=DEFAULT_TIMEOUT, **kwargs)
+            response.raise_for_status()
+            return response.text
+        return self._retry_request(_request)
     
     def search_by_ifb_number(self, ifb_number):
         """Search for tenders by IFB/RFP/EOI/PQ number"""
@@ -88,20 +128,23 @@ class BolpatraFetcher:
         }
         
         url = f"{self.BASE_URL}/SearchOpportunitiesResultHomePage"
-        response = self.session.get(url, params=params, timeout=DEFAULT_TIMEOUT)
-        response.raise_for_status()
-        
-        return self._parse_search_results(response.text)
+        html = self._get_text(url, params=params)
+        return self._parse_search_results(html)
     
     def _parse_search_results(self, html):
-        """Parse search results to extract tender IDs and basic info"""
+        """Parse search results to extract tender IDs and metadata"""
         soup = BeautifulSoup(html, 'html.parser')
         results = []
         
         table = soup.find('table', {'id': 'dashBoardBidResult'})
         if not table:
-            print("No results table found")
-            return results
+            # Check for known empty-results marker
+            no_records = soup.find(text=re.compile(r'no\s+records?\s+found', re.IGNORECASE))
+            if no_records:
+                print("No results found")
+                return results
+            # If table is missing and no empty-results marker, this is a parse failure
+            raise ValueError("Search results table not found and no empty-results marker present - possible site change or error page")
         
         tbody = table.find('tbody')
         if not tbody:
@@ -132,7 +175,11 @@ class BolpatraFetcher:
                         'status': cells[5].get_text(strip=True),
                     }
                     results.append(result)
-                    print(f"Found tender: {result['ifb_number']} - {result['project_title']}")
+                    
+                    # Log with smart truncation
+                    title = result['project_title']
+                    short_title = title[:60] + "..." if len(title) > 60 else title
+                    print(f"Found: {short_title} (ID: {tender_id})")
         
         return results
 
@@ -147,10 +194,8 @@ class BolpatraFetcher:
             '_': str(int(time.time() * 1000))
         }
         
-        response = self.session.get(url, params=params, timeout=DEFAULT_TIMEOUT)
-        response.raise_for_status()
-        
-        return self._parse_tender_details(response.text, tender_id)
+        html = self._get_text(url, params=params)
+        return self._parse_tender_details(html, tender_id)
     
     def _parse_tender_details(self, html, tender_id):
         """Parse tender details page to extract document download links"""
@@ -197,12 +242,15 @@ class BolpatraFetcher:
                         'doc_id': doc_id,
                         'download_url': f"{self.BASE_URL}/{href.lstrip('/')}"
                     })
-                    print(f"  Found document: {doc_type} ({pub_date})")
         
+        print(f"Found {len(details['documents'])} document(s)")
         return details
     
     def download_document(self, doc_info, tender_id, ifb_number):
-        """Download a single document"""
+        """
+        Download and validate a document. Returns filepath or None on failure.
+        Validates PDF magic bytes and cleans up partial files on error.
+        """
         url = doc_info['download_url']
         
         # Sanitize filename components - replace any non-safe characters
@@ -217,22 +265,49 @@ class BolpatraFetcher:
         filename = f"{safe_ifb}_{safe_tender_id}_{safe_doc_id}_{doc_type}_{pub_date}.pdf"
         filepath = os.path.join(self.output_dir, filename)
         
-        print(f"Downloading: {filename}")
+        def _do_download():
+            with self.session.get(url, stream=True, timeout=DEFAULT_TIMEOUT) as response:
+                response.raise_for_status()
+                
+                # Validate content type
+                content_type = response.headers.get('Content-Type', '').lower()
+                if 'pdf' not in content_type and 'application/octet-stream' not in content_type:
+                    print(f"  Warning: Unexpected Content-Type: {content_type}")
+                
+                # Download and validate PDF header
+                first_chunk = None
+                with open(filepath, 'wb') as f:
+                    for chunk in response.iter_content(chunk_size=8192):
+                        if chunk:
+                            if first_chunk is None:
+                                first_chunk = chunk
+                                # Validate PDF magic bytes
+                                if not chunk.startswith(b'%PDF'):
+                                    preview = repr(chunk[:20])
+                                    raise ValueError(f"Downloaded file is not a valid PDF (starts with: {preview})")
+                            f.write(chunk)
+                
+                if first_chunk is None:
+                    raise ValueError("Downloaded file is empty")
+                
+                return filepath
         
         try:
-            response = self.session.get(url, stream=True, timeout=DEFAULT_TIMEOUT)
-            response.raise_for_status()
-        except requests.exceptions.RequestException as e:
+            result_path = self._retry_request(
+                _do_download,
+                retryable_exceptions=(requests.exceptions.RequestException, ValueError)
+            )
+            print(f"  ✓ {doc_type}")
+            return result_path
+        except (requests.exceptions.RequestException, ValueError) as e:
             print(f"  Error downloading from {url}: {e}")
+            # Clean up partial file
+            try:
+                if os.path.exists(filepath):
+                    os.remove(filepath)
+            except OSError:
+                pass
             return None
-        
-        try:
-            with open(filepath, 'wb') as f:
-                for chunk in response.iter_content(chunk_size=8192):
-                    f.write(chunk)
-            
-            print(f"  Saved to: {filepath}")
-            return filepath
         except OSError as e:
             print(f"  File I/O error writing to {filepath}: {e}")
             # Clean up partial file
@@ -244,10 +319,9 @@ class BolpatraFetcher:
             return None
     
     def fetch_all_documents(self, ifb_number):
-        """Main method to search and download all documents for an IFB number
-        
-        Returns:
-            dict: {'downloaded': [filepaths], 'failed': [error_dicts]}
+        """
+        Search and download all documents for an IFB number.
+        Returns dict with 'downloaded' (filepaths) and 'failed' (errors) lists.
         """
         print(f"\n{'='*60}")
         print(f"Fetching bolpatra documents for: {ifb_number}")
@@ -300,7 +374,8 @@ class BolpatraFetcher:
                 continue
             
             # Download all documents
-            print(f"\nDownloading {len(details['documents'])} documents...")
+            if details['documents']:
+                print(f"Downloading {len(details['documents'])} document(s)...")
             for doc in details['documents']:
                 filepath = self.download_document(doc, tender_id, result['ifb_number'])
                 if filepath:
@@ -314,9 +389,10 @@ class BolpatraFetcher:
                     })
         
         print(f"\n{'='*60}")
-        print(f"Downloaded {len(results['downloaded'])} documents to: {self.output_dir}")
+        if results['downloaded']:
+            print(f"Downloaded {len(results['downloaded'])} document(s) to: {self.output_dir}")
         if results['failed']:
-            print(f"Failed: {len(results['failed'])} operations")
+            print(f"Failed: {len(results['failed'])} operation(s)")
         print(f"{'='*60}\n")
         
         return results
@@ -333,25 +409,14 @@ def main():
     fetcher = BolpatraFetcher()
     results = fetcher.fetch_all_documents(ifb_number)
     
-    if results['downloaded']:
-        print("\nDownloaded files:")
-        for f in results['downloaded']:
-            print(f"  ✓ {f}")
-    
-    if results['failed']:
-        print("\nFailed operations:")
-        for failure in results['failed']:
-            print(f"  ✗ {failure}")
-    
-    # Exit with error code if nothing was downloaded or if any operations failed
+    # Exit with appropriate code
     if not results['downloaded']:
-        print("\nNo files downloaded")
+        print("No files downloaded", file=sys.stderr)
         sys.exit(1)
     elif results['failed']:
-        print(f"\nDownloaded {len(results['downloaded'])} file(s), but {len(results['failed'])} operation(s) failed", file=sys.stderr)
+        print(f"Downloaded {len(results['downloaded'])} file(s), but {len(results['failed'])} operation(s) failed", file=sys.stderr)
         sys.exit(1)
     else:
-        print(f"\nSuccessfully downloaded {len(results['downloaded'])} file(s)")
         sys.exit(0)
 
 
