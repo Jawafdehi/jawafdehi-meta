@@ -1,0 +1,46 @@
+{
+  "name": "Jawafdehi Admin",
+  "postCreateCommand": "./.devcontainer/startup.sh",
+  "forwardPorts": [
+    40321
+  ],
+  "customizations": {
+    "codespaces": {
+      "repositories": {
+        "Jawafdehi/*": {
+          "permissions": "write-all"
+        }
+      }
+    },
+    "vscode": {
+      "extensions": [
+        "GitHub.codespaces",
+        "GitHub.vscode-pull-request-github",
+        "ms-python.python",
+        "Github.copilot",
+        "mhutchie.git-graph",
+        "shd101wyy.markdown-preview-enhanced",
+        "zaaack.markdown-editor",
+        "mathematic.vscode-pdf",
+        "ShahilKumar.docxreader",
+        "GrapeCity.gc-excelviewer",
+        "mechatroner.rainbow-csv"
+      ],
+      "settings": {
+        "editor.formatOnSave": false,
+        "remote.autoForwardPorts": false,
+        "javascript.autoClosingTags": false,
+        "python.testing.pytestEnabled": true,
+        "window.confirmBeforeClose": true,
+        "chat.mcp.autostart": "onlyNew",
+        "telemetry.feedback.enabled": false,
+        "telemetry.editStats.enabled": false
+      }
+    }
+  },
+  "secrets": {
+    "JAWAFDEHI_API_TOKEN": {
+      "description": "Jawafdehi API authentication token."
+    }
+  }
+}
