@@ -47,7 +47,7 @@ To download the file, use `curl` or equivalent tools.
 
 > NOTE: CIAA press releases are also available in .agents/caseworker/data/ciaa-press-releases.csv. It might be easier to get the press release URL.
 
-Once you find the URL, check for .doc, .docx, or .pdf files in the web page. Use this url to download the file.
+Once you find the URL, check for .doc, .docx, or .pdf files in the web page. Use curl or similar tools to download the file, and then convert to markdown afterwards.
 
 ### Charge sheet.
 
